@@ -1,11 +1,13 @@
-import React, { Component } from 'react';
-import { Container } from 'reactstrap';
-class App extends Component {
-	render() {
-		return <Container>
-      <h1>hi</h1>
-    </Container>;
-	}
-}
+import React from 'react';
+import './App.css';
+import Home from './pages';
+
+const App = () => {
+	return (
+		<>
+			<Home />
+		</>
+	);
+};
 
 export default App;
