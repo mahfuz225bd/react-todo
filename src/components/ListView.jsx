@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactTooltip from 'react-tooltip';
+import PropTypes from 'prop-types';
 
 import {
 	Button,
@@ -9,6 +9,7 @@ import {
 	ListGroupItemHeading,
 	ListGroupItemText,
 } from 'reactstrap';
+import ReactTooltip from 'react-tooltip';
 
 function ListView({ todos, onSelect, onStart, onComplete, onIncomplete }) {
 	return (
@@ -26,7 +27,7 @@ function ListView({ todos, onSelect, onStart, onComplete, onIncomplete }) {
 							data-tip="Select todo"
 							data-place="right"
 							checked={todo.selected}
-							onChange={onSelect}
+							onChange={() => onSelect(todo.id)}
 						/>
 						<div className="me-auto ms-2">
 							<ListGroupItemHeading>{todo.title}</ListGroupItemHeading>
@@ -40,7 +41,7 @@ function ListView({ todos, onSelect, onStart, onComplete, onIncomplete }) {
 									color="success"
 									data-tip="Incomplete, click to mark as complete"
 									data-place="left"
-									onClick={onStart}
+									onClick={() => onComplete(todo.id)}
 								>
 									Running
 								</Button>
@@ -49,7 +50,7 @@ function ListView({ todos, onSelect, onStart, onComplete, onIncomplete }) {
 									color="danger"
 									data-tip="Completed, click to mark as incomplete"
 									data-place="left"
-									onClick={onComplete}
+									onClick={() => onIncomplete(todo.id)}
 								>
 									Completed
 								</Button>
@@ -58,7 +59,7 @@ function ListView({ todos, onSelect, onStart, onComplete, onIncomplete }) {
 									color="primary"
 									data-tip="Start task"
 									data-place="left"
-									onClick={onIncomplete}
+									onClick={() => onStart(todo.id)}
 								>
 									Start
 								</Button>
@@ -71,5 +72,23 @@ function ListView({ todos, onSelect, onStart, onComplete, onIncomplete }) {
 		</div>
 	);
 }
+
+ListView.propTypes = {
+	todos: PropTypes.arrayOf(
+		PropTypes.shape({
+			selected: PropTypes.bool.isRequired,
+			id: PropTypes.number,
+			title: PropTypes.string.isRequired,
+			description: PropTypes.string,
+			date: PropTypes.string.isRequired,
+			started: PropTypes.bool.isRequired,
+			completed: PropTypes.bool.isRequired,
+		})
+	).isRequired,
+	onComplete: PropTypes.func.isRequired,
+	onIncomplete: PropTypes.func.isRequired,
+	onSelect: PropTypes.func.isRequired,
+	onStart: PropTypes.func.isRequired,
+};
 
 export default ListView;

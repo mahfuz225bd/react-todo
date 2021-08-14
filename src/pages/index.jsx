@@ -42,16 +42,66 @@ class Home extends Component {
 		this.handleComplete = this.handleComplete.bind(this);
 		this.handleIncomplete = this.handleIncomplete.bind(this);
 	}
-	handleSelect() {}
-	handleStart() {}
-	handleComplete() {}
-	handleIncomplete() {}
+	handleSelect(targetId) {
+		const newData = [...this.state.data];
+
+		newData.find((each) => {
+			if (each.id === targetId) {
+				each.selected = !each.selected;
+			}
+		});
+
+		this.setState({ data: newData });
+	}
+
+	handleStart(targetId) {
+		const newData = [...this.state.data];
+
+		newData.find((each) => {
+			if (each.id === targetId) {
+				each.started = true;
+			}
+		});
+
+		this.setState({ data: newData });
+	}
+
+	handleComplete(targetId) {
+		const newData = [...this.state.data];
+
+		newData.find((each) => {
+			if (each.id === targetId) {
+				each.completed = true;
+			}
+		});
+
+		this.setState({ data: newData });
+	}
+
+	handleIncomplete(targetId) {
+		const newData = [...this.state.data];
+
+		newData.find((each) => {
+			if (each.id === targetId) {
+				each.completed = false;
+				each.started = false;
+			}
+		});
+
+		this.setState({ data: newData });
+	}
 
 	render() {
 		const { data } = this.state;
 		return (
 			<Container fluid>
-				<TodoApp data={data} />
+				<TodoApp
+					data={data}
+					handleSelect={this.handleSelect}
+					handleStart={this.handleStart}
+					handleComplete={this.handleComplete}
+					handleIncomplete={this.handleIncomplete}
+				/>
 			</Container>
 		);
 	}

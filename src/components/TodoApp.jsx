@@ -1,6 +1,8 @@
 import React from 'react';
+
 import { Container, Col, Row } from 'reactstrap';
 import ListView from './ListView';
+import TableView from './TableView';
 
 const TodoApp = ({
 	data,
@@ -20,6 +22,13 @@ const TodoApp = ({
 				<Row>
 					<Col>
 						<ListView
+							todos={data}
+							onSelect={handleSelect}
+							onStart={handleStart}
+							onComplete={handleComplete}
+							onIncomplete={handleIncomplete}
+						/>
+						<TableView
 							todos={data}
 							onSelect={handleSelect}
 							onStart={handleStart}
