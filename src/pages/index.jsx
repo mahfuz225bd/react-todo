@@ -6,52 +6,63 @@ import ReactTooltip from 'react-tooltip';
 import formatedDateTime from '../assets/js/formattedDateTime';
 
 import TodoApp from '../components/TodoApp';
+import shortid from 'shortid';
+
+// Setting up currID and data, if not found
+if (!localStorage.currID && !localStorage.data) {
+	localStorage.setItem('currID', 4);
+	localStorage.setItem(
+		'data',
+		`[{
+		"selected":false,
+		"id":1,
+		"title":"New todo",
+		"description":"About todo",
+		"datetime":"Wed, Aug 18 2021, 12:20 AM",
+		"started":false,
+		"completed":false
+ },
+ {
+		"selected":false,
+		"id":2,
+		"title":"Another todo",
+		"description":"someting about bla bla bal....",
+		"datetime":"Wed, Aug 18 2021, 12:20 AM",
+		"started":true,
+		"completed":false
+ },
+ {
+		"selected":false,
+		"id":3,
+		"title":"Third one",
+		"description":"About todo",
+		"datetime":"Wed, Aug 18 2021, 12:21 AM",
+		"started":true,
+		"completed":true
+ }]`
+	);
+}
 
 const initNewTodo = {
 	title: '',
 	description: '',
-	started: true,
+	started: false,
 };
 
 class Home extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			data: [
-				{
-					selected: true,
-					id: 1,
-					title: 'New todo',
-					description: 'About todo',
-					datetime: formatedDateTime(),
-					started: false,
-					completed: false,
-				},
-				{
-					selected: false,
-					id: 2,
-					title: 'Another todo',
-					description: 'someting about bla bla bal....',
-					datetime: formatedDateTime(),
-					started: true,
-					completed: false,
-				},
-				{
-					selected: false,
-					id: 3,
-					title: 'Third one',
-					description: 'About todo',
-					datetime: formatedDateTime(),
-					started: true,
-					completed: true,
-				},
-			],
-
+			data: JSON.parse(localStorage.getItem('data')),
 			newTodo: initNewTodo,
 
 			openAddTodo: false,
 
-			switchView: 'table',
+			searchValue: '',
+
+			filter: 'all',
+			sort: 'asc',
+			currView: 'table',
 		};
 
 		this.handleChange = this.handleChange.bind(this);
@@ -123,6 +134,10 @@ class Home extends Component {
 			});
 		}
 
+		// Set data
+		localStorage.setItem('data', JSON.stringify(newData));
+
+		// Set state
 		this.setState({ data: newData });
 	}
 
@@ -139,27 +154,31 @@ class Home extends Component {
 	}
 
 	handleSubmit(event) {
-		const { title, description, started } = this.state.newTodo;
-		const { data } = this.state;
-
-		const lastData = data[data.length - 1];
-		const lastID = lastData.id || 0;
-
 		event.preventDefault();
 
-		const newData = {
+		const { title, description, started } = this.state.newTodo;
+
+		const data = JSON.parse(localStorage.getItem('data'));
+		const getID = Number(localStorage.getItem('currID'));
+
+		data.push({
 			selected: false,
-			id: lastID + 1,
+			id: getID,
 			title: title,
-			date: formatedDateTime(),
+			datetime: formatedDateTime(),
 			description: description,
 			started: started,
 			completed: false,
-		};
-
-		this.setState({
-			data: [...data, newData],
 		});
+
+		// Set data
+		localStorage.setItem('data', JSON.stringify(data));
+
+		// Set state
+		this.setState({ data });
+
+		// Increment id
+		localStorage.setItem('currID', getID + 1);
 	}
 
 	render() {
@@ -167,6 +186,7 @@ class Home extends Component {
 		return (
 			<Container fluid>
 				{/* Add Todo */}
+				<button onClick={this.toggleAddTodoModal}>Add</button>
 				<TodoApp
 					data={data}
 					newTodo={{

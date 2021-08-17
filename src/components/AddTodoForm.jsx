@@ -71,8 +71,8 @@ AddTodoForm.propTypes = {
 		description: PropTypes.string.isRequired,
 		started: PropTypes.bool.isRequired,
 	}).isRequired,
-	onChangeCheckbox: PropTypes.func.isRequired,
 	onChangeInput: PropTypes.func.isRequired,
+	onChangeCheckbox: PropTypes.func.isRequired,
 	onSubmit: PropTypes.func.isRequired,
 };
 

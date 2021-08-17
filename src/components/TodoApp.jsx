@@ -9,7 +9,6 @@ import CustomModal from './CustomModal';
 const TodoApp = ({ data, newTodo, openAddTodo, onSelect, onChangeStatus }) => {
 	const submitAddTodoForm = () => {
 		document.querySelector('#addTodo button[type=submit]').click();
-		openAddTodo.reset();
 	};
 	return (
 		<>
@@ -50,6 +49,7 @@ const TodoApp = ({ data, newTodo, openAddTodo, onSelect, onChangeStatus }) => {
 									onClick={() => {
 										submitAddTodoForm();
 										openAddTodo.toggle();
+										openAddTodo.reset();
 									}}
 								>
 									<i class="fas fa-plus" aria-hidden="true"></i> Add
@@ -58,6 +58,7 @@ const TodoApp = ({ data, newTodo, openAddTodo, onSelect, onChangeStatus }) => {
 									color="primary"
 									onClick={() => {
 										submitAddTodoForm();
+										openAddTodo.reset();
 										document.querySelector('#addTodo #title').focus();
 									}}
 								>
