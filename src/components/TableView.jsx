@@ -1,7 +1,9 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+
 import { Table, CustomInput, Button } from 'reactstrap';
 
-function TableView({ todos, onSelect, onStart, onComplete, onIncomplete }) {
+function TableView({ todos, onSelect, onChangeStatus }) {
 	return (
 		<div>
 			<Table>
@@ -28,7 +30,7 @@ function TableView({ todos, onSelect, onStart, onComplete, onIncomplete }) {
 								/>
 							</th>
 							<td>{todo.title}</td>
-							<td>{todo.date}</td>
+							<td>{todo.datetime}</td>
 							<td>
 								{todo.started && !todo.completed ? (
 									<Button
@@ -36,7 +38,7 @@ function TableView({ todos, onSelect, onStart, onComplete, onIncomplete }) {
 										className="rounded-0 w-100"
 										data-tip="Incomplete, click to mark as complete"
 										data-place="left"
-										onClick={() => onComplete(todo.id)}
+										onClick={() => onChangeStatus(todo.id, 'complete')}
 									>
 										Running
 									</Button>
@@ -46,7 +48,7 @@ function TableView({ todos, onSelect, onStart, onComplete, onIncomplete }) {
 										className="rounded-0 w-100"
 										data-tip="Completed, click to mark as incomplete"
 										data-place="left"
-										onClick={() => onIncomplete(todo.id)}
+										onClick={() => onChangeStatus(todo.id, 'incomplete')}
 									>
 										Completed
 									</Button>
@@ -56,7 +58,7 @@ function TableView({ todos, onSelect, onStart, onComplete, onIncomplete }) {
 										className="rounded-0 w-100"
 										data-tip="Start task"
 										data-place="left"
-										onClick={() => onStart(todo.id)}
+										onClick={() => onChangeStatus(todo.id, 'start')}
 									>
 										Start
 									</Button>
@@ -69,5 +71,21 @@ function TableView({ todos, onSelect, onStart, onComplete, onIncomplete }) {
 		</div>
 	);
 }
+
+TableView.propTypes = {
+	todos: PropTypes.arrayOf(
+		PropTypes.shape({
+			selected: PropTypes.bool.isRequired,
+			id: PropTypes.number,
+			title: PropTypes.string.isRequired,
+			description: PropTypes.string,
+			date: PropTypes.string.isRequired,
+			started: PropTypes.bool.isRequired,
+			completed: PropTypes.bool.isRequired,
+		})
+	).isRequired,
+	onSelect: PropTypes.func.isRequired,
+	onChangeStatus: PropTypes.func,
+};
 
 export default TableView;

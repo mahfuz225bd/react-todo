@@ -23,7 +23,7 @@ class Home extends Component {
 					id: 1,
 					title: 'New todo',
 					description: 'About todo',
-					date: formatedDateTime(),
+					datetime: formatedDateTime(),
 					started: false,
 					completed: false,
 				},
@@ -32,7 +32,7 @@ class Home extends Component {
 					id: 2,
 					title: 'Another todo',
 					description: 'someting about bla bla bal....',
-					date: formatedDateTime(),
+					datetime: formatedDateTime(),
 					started: true,
 					completed: false,
 				},
@@ -41,7 +41,7 @@ class Home extends Component {
 					id: 3,
 					title: 'Third one',
 					description: 'About todo',
-					date: formatedDateTime(),
+					datetime: formatedDateTime(),
 					started: true,
 					completed: true,
 				},
@@ -50,19 +50,18 @@ class Home extends Component {
 			newTodo: initNewTodo,
 
 			openAddTodo: false,
+
+			switchView: 'table',
 		};
 
 		this.handleChange = this.handleChange.bind(this);
 		this.handleCheckbox = this.handleCheckbox.bind(this);
 
 		this.handleSelect = this.handleSelect.bind(this);
-		this.handleStart = this.handleStart.bind(this);
-		this.handleComplete = this.handleComplete.bind(this);
-		this.handleIncomplete = this.handleIncomplete.bind(this);
+		this.handleStatus = this.handleStatus.bind(this);
 
 		this.toggleAddTodoModal = this.toggleAddTodoModal.bind(this);
 		this.resetAddTodo = this.resetAddTodo.bind(this);
-
 		this.handleSubmit = this.handleSubmit.bind(this);
 	}
 
@@ -96,39 +95,33 @@ class Home extends Component {
 		this.setState({ data: newData });
 	}
 
-	handleStart(targetId) {
+	handleStatus(targetId, to) {
 		const newData = [...this.state.data];
 
-		newData.find((each) => {
-			if (each.id === targetId) {
-				each.started = true;
-			}
-		});
+		if (to === 'start') {
+			newData.find((each) => {
+				if (each.id === targetId) {
+					each.started = true;
+				}
+			});
+		}
 
-		this.setState({ data: newData });
-	}
+		if (to === 'complete') {
+			newData.find((each) => {
+				if (each.id === targetId) {
+					each.completed = true;
+				}
+			});
+		}
 
-	handleComplete(targetId) {
-		const newData = [...this.state.data];
-
-		newData.find((each) => {
-			if (each.id === targetId) {
-				each.completed = true;
-			}
-		});
-
-		this.setState({ data: newData });
-	}
-
-	handleIncomplete(targetId) {
-		const newData = [...this.state.data];
-
-		newData.find((each) => {
-			if (each.id === targetId) {
-				each.completed = false;
-				each.started = false;
-			}
-		});
+		if (to === 'incomplete') {
+			newData.find((each) => {
+				if (each.id === targetId) {
+					each.completed = false;
+					each.started = false;
+				}
+			});
+		}
 
 		this.setState({ data: newData });
 	}
@@ -173,7 +166,7 @@ class Home extends Component {
 		const { data, newTodo, openAddTodo } = this.state;
 		return (
 			<Container fluid>
-				<button onClick={this.toggleAddTodoModal}>Click</button>
+				{/* Add Todo */}
 				<TodoApp
 					data={data}
 					newTodo={{
@@ -188,9 +181,7 @@ class Home extends Component {
 						reset: this.resetAddTodo,
 					}}
 					onSelect={this.handleSelect}
-					onStart={this.handleStart}
-					onComplete={this.handleComplete}
-					onIncomplete={this.handleIncomplete}
+					onChangeStatus={this.handleStatus}
 				/>
 				<ReactTooltip />
 			</Container>

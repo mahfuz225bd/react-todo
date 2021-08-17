@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { Col, Form, FormGroup, Label, Input, FormFeedback } from 'reactstrap';
+import { Col, Form, FormGroup, Label, Input } from 'reactstrap';
 
 function AddTodoForm({
 	newTodoObj,
@@ -25,14 +25,8 @@ function AddTodoForm({
 							placeholder="New dummy task"
 							value={newTodoObj.title}
 							onChange={onChangeInput}
-							invalid={
-								document.querySelector('#addTodo #title') ===
-									document.activeElement && newTodoObj.title === ''
-							}
-							valid={newTodoObj.title !== ''}
 							required
 						/>
-						<FormFeedback>You must provide task name</FormFeedback>
 					</Col>
 				</FormGroup>
 				<FormGroup className="mb-2" row>

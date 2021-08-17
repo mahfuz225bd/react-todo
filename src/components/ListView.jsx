@@ -1,5 +1,4 @@
 import React from 'react';
-
 import PropTypes from 'prop-types';
 
 import {
@@ -11,7 +10,7 @@ import {
 	ListGroupItemText,
 } from 'reactstrap';
 
-function ListView({ todos, onSelect, onStart, onComplete, onIncomplete }) {
+function ListView({ todos, onSelect, onChangeStatus }) {
 	return (
 		<div>
 			<ListGroup>
@@ -32,37 +31,37 @@ function ListView({ todos, onSelect, onStart, onComplete, onIncomplete }) {
 						<div className="ms-2">
 							<ListGroupItemHeading>{todo.title}</ListGroupItemHeading>
 							<ListGroupItemText className="text-muted">
-								{todo.date}
+								{todo.datetime}
 							</ListGroupItemText>
 						</div>
 						<div className="ms-auto align-self-center">
 							{todo.started && !todo.completed ? (
 								<Button
 									color="success"
-									className="rounded-0"
+									className="rounded-0 w-100"
 									data-tip="Incomplete, click to mark as complete"
 									data-place="left"
-									onClick={() => onComplete(todo.id)}
+									onClick={() => onChangeStatus(todo.id, 'complete')}
 								>
 									Running
 								</Button>
 							) : todo.started && todo.completed ? (
 								<Button
 									color="danger"
-									className="rounded-0"
+									className="rounded-0 w-100"
 									data-tip="Completed, click to mark as incomplete"
 									data-place="left"
-									onClick={() => onIncomplete(todo.id)}
+									onClick={() => onChangeStatus(todo.id, 'incomplete')}
 								>
 									Completed
 								</Button>
 							) : (
 								<Button
 									color="primary"
-									className="rounded-0"
+									className="rounded-0 w-100"
 									data-tip="Start task"
 									data-place="left"
-									onClick={() => onStart(todo.id)}
+									onClick={() => onChangeStatus(todo.id, 'start')}
 								>
 									Start
 								</Button>
@@ -87,10 +86,8 @@ ListView.propTypes = {
 			completed: PropTypes.bool.isRequired,
 		})
 	).isRequired,
-	onComplete: PropTypes.func.isRequired,
-	onIncomplete: PropTypes.func.isRequired,
 	onSelect: PropTypes.func.isRequired,
-	onStart: PropTypes.func.isRequired,
+	onChangeStatus: PropTypes.func,
 };
 
 export default ListView;

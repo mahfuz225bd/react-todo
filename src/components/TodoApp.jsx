@@ -6,15 +6,11 @@ import ListView from './ListView';
 import TableView from './TableView';
 import CustomModal from './CustomModal';
 
-const TodoApp = ({
-	data,
-	newTodo,
-	openAddTodo,
-	onSelect,
-	onStart,
-	onComplete,
-	onIncomplete,
-}) => {
+const TodoApp = ({ data, newTodo, openAddTodo, onSelect, onChangeStatus }) => {
+	const submitAddTodoForm = () => {
+		document.querySelector('#addTodo button[type=submit]').click();
+		openAddTodo.reset();
+	};
 	return (
 		<>
 			<Container>
@@ -28,9 +24,12 @@ const TodoApp = ({
 						<TableView
 							todos={data}
 							onSelect={onSelect}
-							onStart={onStart}
-							onComplete={onComplete}
-							onIncomplete={onIncomplete}
+							onChangeStatus={onChangeStatus}
+						/>
+						<ListView
+							todos={data}
+							onSelect={onSelect}
+							onChangeStatus={onChangeStatus}
 						/>
 					</Col>
 					{/* Modal: AddTodoForm */}
@@ -49,18 +48,19 @@ const TodoApp = ({
 								<Button
 									color="primary"
 									onClick={() => {
-										document
-											.querySelector('#addTodo button[type=submit]')
-											.click();
-										// close, if title is not empty
-										if (newTodo.title) {
-											openAddTodo.toggle();
-										}
+										submitAddTodoForm();
+										openAddTodo.toggle();
 									}}
 								>
 									<i class="fas fa-plus" aria-hidden="true"></i> Add
 								</Button>
-								<Button color="primary" onClick>
+								<Button
+									color="primary"
+									onClick={() => {
+										submitAddTodoForm();
+										document.querySelector('#addTodo #title').focus();
+									}}
+								>
 									<i class="fas fa-asterisk" aria-hidden="true"></i> Save {'&'}{' '}
 									New
 								</Button>
