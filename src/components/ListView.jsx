@@ -1,4 +1,5 @@
 import React from 'react';
+
 import PropTypes from 'prop-types';
 
 import {
@@ -9,7 +10,6 @@ import {
 	ListGroupItemHeading,
 	ListGroupItemText,
 } from 'reactstrap';
-import ReactTooltip from 'react-tooltip';
 
 function ListView({ todos, onSelect, onStart, onComplete, onIncomplete }) {
 	return (
@@ -17,7 +17,7 @@ function ListView({ todos, onSelect, onStart, onComplete, onIncomplete }) {
 			<ListGroup>
 				{todos.map((todo, index) => (
 					<ListGroupItem
-						className="d-flex justify-content-between align-items-start"
+						className="d-flex justify-content-start align-items-start"
 						key={index}
 					>
 						<CustomInput
@@ -29,16 +29,17 @@ function ListView({ todos, onSelect, onStart, onComplete, onIncomplete }) {
 							checked={todo.selected}
 							onChange={() => onSelect(todo.id)}
 						/>
-						<div className="me-auto ms-2">
+						<div className="ms-2">
 							<ListGroupItemHeading>{todo.title}</ListGroupItemHeading>
 							<ListGroupItemText className="text-muted">
 								{todo.date}
 							</ListGroupItemText>
 						</div>
-						<div className="align-self-center">
+						<div className="ms-auto align-self-center">
 							{todo.started && !todo.completed ? (
 								<Button
 									color="success"
+									className="rounded-0"
 									data-tip="Incomplete, click to mark as complete"
 									data-place="left"
 									onClick={() => onComplete(todo.id)}
@@ -48,6 +49,7 @@ function ListView({ todos, onSelect, onStart, onComplete, onIncomplete }) {
 							) : todo.started && todo.completed ? (
 								<Button
 									color="danger"
+									className="rounded-0"
 									data-tip="Completed, click to mark as incomplete"
 									data-place="left"
 									onClick={() => onIncomplete(todo.id)}
@@ -57,6 +59,7 @@ function ListView({ todos, onSelect, onStart, onComplete, onIncomplete }) {
 							) : (
 								<Button
 									color="primary"
+									className="rounded-0"
 									data-tip="Start task"
 									data-place="left"
 									onClick={() => onStart(todo.id)}
@@ -65,7 +68,6 @@ function ListView({ todos, onSelect, onStart, onComplete, onIncomplete }) {
 								</Button>
 							)}
 						</div>
-						<ReactTooltip />
 					</ListGroupItem>
 				))}
 			</ListGroup>

@@ -1,6 +1,5 @@
 import React from 'react';
 import { Table, CustomInput, Button } from 'reactstrap';
-import ReactTooltip from 'react-tooltip';
 
 function TableView({ todos, onSelect, onStart, onComplete, onIncomplete }) {
 	return (
@@ -15,8 +14,8 @@ function TableView({ todos, onSelect, onStart, onComplete, onIncomplete }) {
 					</tr>
 				</thead>
 				<tbody>
-					{todos.map((todo) => (
-						<tr>
+					{todos.map((todo, index) => (
+						<tr key={index}>
 							<th>
 								<CustomInput
 									id="chkSelect"
@@ -34,6 +33,7 @@ function TableView({ todos, onSelect, onStart, onComplete, onIncomplete }) {
 								{todo.started && !todo.completed ? (
 									<Button
 										color="success"
+										className="rounded-0 w-100"
 										data-tip="Incomplete, click to mark as complete"
 										data-place="left"
 										onClick={() => onComplete(todo.id)}
@@ -43,6 +43,7 @@ function TableView({ todos, onSelect, onStart, onComplete, onIncomplete }) {
 								) : todo.started && todo.completed ? (
 									<Button
 										color="danger"
+										className="rounded-0 w-100"
 										data-tip="Completed, click to mark as incomplete"
 										data-place="left"
 										onClick={() => onIncomplete(todo.id)}
@@ -52,6 +53,7 @@ function TableView({ todos, onSelect, onStart, onComplete, onIncomplete }) {
 								) : (
 									<Button
 										color="primary"
+										className="rounded-0 w-100"
 										data-tip="Start task"
 										data-place="left"
 										onClick={() => onStart(todo.id)}
@@ -63,7 +65,6 @@ function TableView({ todos, onSelect, onStart, onComplete, onIncomplete }) {
 						</tr>
 					))}
 				</tbody>
-				<ReactTooltip />
 			</Table>
 		</div>
 	);
