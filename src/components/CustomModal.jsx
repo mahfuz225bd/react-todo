@@ -21,7 +21,7 @@ function CustomModal({
 							className="btn-close"
 							onClick={() => {
 								onToggle();
-								onClose();
+								onClose && onClose();
 							}}
 						>
 							&times;
@@ -37,7 +37,7 @@ function CustomModal({
 						color="secondary"
 						onClick={() => {
 							onToggle();
-							onClose();
+							onClose && onClose();
 						}}
 					>
 						Cancel

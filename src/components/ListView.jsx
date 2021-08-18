@@ -17,8 +17,12 @@ function ListView({ todos, onSelect, onChangeStatus }) {
 				<ListGroup>
 					{todos.map((todo, index) => (
 						<ListGroupItem
-							className="d-flex justify-content-start align-items-start"
+							className={`d-flex justify-content-start align-items-start user-select-none ${
+								todo.selected && 'bg-light'
+							}`}
 							key={index}
+							action
+							onClick={() => onSelect(todo.id)}
 						>
 							<CustomInput
 								id="chkSelect"

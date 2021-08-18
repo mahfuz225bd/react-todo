@@ -6,7 +6,6 @@ import ReactTooltip from 'react-tooltip';
 import formatedDateTime from '../assets/js/formattedDateTime';
 
 import TodoApp from '../components/TodoApp';
-import shortid from 'shortid';
 
 // Setting up currID and data, if not found
 if (!localStorage.currID && !localStorage.data) {
@@ -62,17 +61,18 @@ class Home extends Component {
 
 			filter: 'all',
 			sort: 'asc',
-			currView: 'table',
+			currView: 'list',
 		};
 
 		this.handleChange = this.handleChange.bind(this);
 		this.handleCheckbox = this.handleCheckbox.bind(this);
 
+		this.changeView = this.changeView.bind(this);
+
 		this.handleSelect = this.handleSelect.bind(this);
 		this.handleStatus = this.handleStatus.bind(this);
 
 		this.toggleAddTodoModal = this.toggleAddTodoModal.bind(this);
-		this.resetAddTodo = this.resetAddTodo.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
 	}
 
@@ -144,11 +144,6 @@ class Home extends Component {
 	toggleAddTodoModal() {
 		this.setState({
 			openAddTodo: !this.state.openAddTodo,
-		});
-	}
-
-	resetAddTodo() {
-		this.setState({
 			newTodo: initNewTodo,
 		});
 	}
@@ -175,10 +170,16 @@ class Home extends Component {
 		localStorage.setItem('data', JSON.stringify(data));
 
 		// Set state
-		this.setState({ data });
+		this.setState({ data, newTodo: initNewTodo });
 
 		// Increment id
 		localStorage.setItem('currID', getID + 1);
+	}
+
+	changeView(value) {
+		this.setState({
+			currView: value,
+		});
 	}
 
 	render() {
@@ -186,7 +187,7 @@ class Home extends Component {
 		return (
 			<Container fluid>
 				{/* Add Todo */}
-				<button onClick={this.toggleAddTodoModal}>Add</button>
+				{/* <button onClick={this.toggleAddTodoModal}>Add</button> */}
 				<TodoApp
 					data={data}
 					newTodo={{
@@ -195,10 +196,15 @@ class Home extends Component {
 						onChangeCheckbox: this.handleCheckbox,
 						onSubmit: this.handleSubmit,
 					}}
-					openAddTodo={{
-						isOpen: openAddTodo,
-						toggle: this.toggleAddTodoModal,
-						reset: this.resetAddTodo,
+					controllers={{
+						dataView: {
+							currView: this.state.currView,
+							changeView: this.changeView,
+						},
+						openAddTodo: {
+							isOpen: openAddTodo,
+							toggle: this.toggleAddTodoModal,
+						},
 					}}
 					onSelect={this.handleSelect}
 					onChangeStatus={this.handleStatus}

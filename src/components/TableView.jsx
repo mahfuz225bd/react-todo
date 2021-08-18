@@ -7,7 +7,7 @@ function TableView({ todos, onSelect, onChangeStatus }) {
 	return (
 		<div>
 			{todos.length ? (
-				<Table>
+				<Table striped border hover size="sm">
 					<thead>
 						<tr>
 							<th>#</th>
@@ -18,8 +18,11 @@ function TableView({ todos, onSelect, onChangeStatus }) {
 					</thead>
 					<tbody>
 						{todos.map((todo, index) => (
-							<tr key={index}>
-								<th>
+							<tr
+								key={index}
+								className={todo.selected && 'bg-dark bg-opacity-10'}
+							>
+								<td>
 									<CustomInput
 										id="chkSelect"
 										type="checkbox"
@@ -29,7 +32,7 @@ function TableView({ todos, onSelect, onChangeStatus }) {
 										checked={todo.selected}
 										onChange={() => onSelect(todo.id)}
 									/>
-								</th>
+								</td>
 								<td>{todo.title}</td>
 								<td>{todo.datetime}</td>
 								<td>
