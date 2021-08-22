@@ -4,7 +4,7 @@ export default function containsInArray(values, value) {
 	});
 
 	if (!isContainsInValues) {
-		throw new Error(`Value Error: value=${value} is not in [${values}]`);
+		throw new Error(`Value Error: value='${value}' must be in [${values}]`);
 	}
 
 	return isContainsInValues;

@@ -56,19 +56,22 @@ class Home extends Component {
 			data: JSON.parse(localStorage.getItem('data')),
 			newTodo: initNewTodo,
 
-			openAddTodo: false,
-
 			searchValue: '',
 
 			filter: 'all',
 			filterDate: 'all',
-			sort: 'asc',
+			sort: 'latest',
 			currView: 'list',
+
+			openAddTodo: false,
 		};
 
 		this.handleChange = this.handleChange.bind(this);
 		this.handleCheckbox = this.handleCheckbox.bind(this);
 
+		this.handleFilter = this.handleFilter.bind(this);
+		this.handleFilterDate = this.handleFilterDate.bind(this);
+		this.handleSort = this.handleSort.bind(this);
 		this.handleChangeView = this.handleChangeView.bind(this);
 		this.toggleAddTodoModal = this.toggleAddTodoModal.bind(this);
 
@@ -109,47 +112,81 @@ class Home extends Component {
 	}
 
 	handleStatus(targetId, to) {
-		const newData = [...this.state.data];
+		const allStutus = ['start', 'complete', 'incomplete'];
 
-		if (to === 'start') {
-			newData.find((each) => {
-				if (each.id === targetId) {
-					each.started = true;
-				}
-			});
+		if (containsInArray(allStutus, to)) {
+			const newData = [...this.state.data];
+
+			if (to === 'start') {
+				newData.find((each) => {
+					if (each.id === targetId) {
+						each.started = true;
+					}
+				});
+			}
+
+			if (to === 'complete') {
+				newData.find((each) => {
+					if (each.id === targetId) {
+						each.completed = true;
+					}
+				});
+			}
+
+			if (to === 'incomplete') {
+				newData.find((each) => {
+					if (each.id === targetId) {
+						each.completed = false;
+						each.started = false;
+					}
+				});
+			}
+
+			// Set data
+			localStorage.setItem('data', JSON.stringify(newData));
+
+			// Set state
+			this.setState({ data: newData });
 		}
-
-		if (to === 'complete') {
-			newData.find((each) => {
-				if (each.id === targetId) {
-					each.completed = true;
-				}
-			});
-		}
-
-		if (to === 'incomplete') {
-			newData.find((each) => {
-				if (each.id === targetId) {
-					each.completed = false;
-					each.started = false;
-				}
-			});
-		}
-
-		// Set data
-		localStorage.setItem('data', JSON.stringify(newData));
-
-		// Set state
-		this.setState({ data: newData });
 	}
 
-	handleFilter(value) {}
+	handleFilter(value) {
+		const filterValues = ['all', 'pending', 'running', 'completed'];
+		if (containsInArray(filterValues, value)) {
+			this.setState({
+				filter: value,
+			});
+		}
+	}
+
+	handleFilterDate(value) {
+		const filterDateValues = [
+			'all',
+			'today',
+			'last7Days',
+			'last15Days',
+			'thisMonth',
+		];
+		if (containsInArray(filterDateValues, value)) {
+			this.setState({
+				filterDate: value,
+			});
+		}
+	}
+
+	handleSort(value) {
+		const sortValues = ['latest', 'oldest'];
+		if (containsInArray(sortValues, value)) {
+			this.setState({
+				sort: value,
+			});
+		}
+	}
 
 	handleChangeView(value) {
 		const views = ['list', 'table'];
-		const isValid = containsInArray(views, value);
-		
-		if (isValid) {
+
+		if (containsInArray(views, value)) {
 			this.setState({
 				currView: value,
 			});
@@ -192,7 +229,8 @@ class Home extends Component {
 	}
 
 	render() {
-		const { data, newTodo, currView, openAddTodo } = this.state;
+		const { data, newTodo, filter, filterDate, sort, currView, openAddTodo } =
+			this.state;
 		return (
 			<Container fluid>
 				{/* Add Todo */}
@@ -205,6 +243,18 @@ class Home extends Component {
 						onSubmit: this.handleSubmit,
 					}}
 					controllers={{
+						filter: {
+							value: filter,
+							changeFilter: this.handleFilter,
+						},
+						filterDate: {
+							value: filterDate,
+							changeFilterDate: this.handleFilterDate,
+						},
+						sort: {
+							value: sort,
+							toggleSort: this.handleSort,
+						},
 						dataView: {
 							currView: currView,
 							changeView: this.handleChangeView,

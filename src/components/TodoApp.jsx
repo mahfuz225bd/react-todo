@@ -1,38 +1,16 @@
-import React, { useState } from 'react';
+import React from 'react';
 
-import {
-	Container,
-	Col,
-	Row,
-	Button,
-	ButtonGroup,
-	ButtonDropdown,
-	DropdownToggle,
-	DropdownMenu,
-	DropdownItem,
-} from 'reactstrap';
-import AddTodoForm from './AddTodoForm';
+import { Container, Col, Row, Button } from 'reactstrap';
+import Controllers from './Controllers';
 import ListView from './ListView';
 import TableView from './TableView';
 import CustomModal from './CustomModal';
+import AddTodoForm from './AddTodoForm';
 
 const TodoApp = ({ data, newTodo, controllers, onSelect, onChangeStatus }) => {
 	const submitAddTodoForm = () => {
 		document.querySelector('#addTodo button[type=submit]').click();
 	};
-
-	const [filterDateOpen, setFilterDateOpen] = useState(false);
-	const togglefilterDate = () => setFilterDateOpen(!filterDateOpen);
-
-	const [selectOptionsOpen, setSelectOptionsOpen] = useState(false);
-	const toggleSelectOptions = () => setSelectOptionsOpen(!selectOptionsOpen);
-
-	const [operationsWSelectedOpen, setOperationsWSelectedOpen] = useState(false);
-	const toggleOperationWSelected = () =>
-		setOperationsWSelectedOpen(!operationsWSelectedOpen);
-
-	const [exportFileOpen, setExportFileOpen] = useState(false);
-	const toggleExportFile = () => setExportFileOpen(!exportFileOpen);
 
 	return (
 		<>
@@ -44,162 +22,7 @@ const TodoApp = ({ data, newTodo, controllers, onSelect, onChangeStatus }) => {
 				</Row>
 				{/* Controllers */}
 				<Row className="mb-2">
-					<Col>
-						{/* Filter */}
-						<ButtonGroup className="d-inline" size="sm">
-							<Button color="primary" data-tip="Filter: All" outline active>
-								All
-							</Button>
-							<Button color="primary" data-tip="Filter: Pending" outline>
-								Pending
-							</Button>
-							<Button color="primary" data-tip="Filter: Running" outline>
-								Running
-							</Button>
-							<Button color="primary" data-tip="Filter: Completed" outline>
-								Completed
-							</Button>
-						</ButtonGroup>{' '}
-						{/* Filter by Date */}
-						<ButtonDropdown isOpen={filterDateOpen} toggle={togglefilterDate}>
-							<Button
-								id="caret"
-								color="primary"
-								size="sm"
-								data-tip="Filter: All days"
-							>
-								All
-							</Button>
-							<DropdownToggle
-								split
-								color="primary"
-								size="sm"
-								data-tip="Filter by Date"
-								outline
-							/>
-							<DropdownMenu>
-								<DropdownItem>Today</DropdownItem>
-								<DropdownItem>Last 7 days</DropdownItem>
-								<DropdownItem>Last 15 days</DropdownItem>
-								<DropdownItem>This month</DropdownItem>
-							</DropdownMenu>
-						</ButtonDropdown>{' '}
-						{/* Sorting */}
-						<Button color="primary" size="sm" data-tip="Sort: Oldest" outline>
-							<i className="fas fa-sort" aria-hidden="true"></i> Oldest
-						</Button>
-					</Col>
-					<div className="d-block d-md-none clearfix mt-1"></div>
-					<Col className="text-md-center">
-						{/* Change Data View */}
-						<ButtonGroup size="sm">
-							<Button
-								color="dark"
-								data-tip="Change view as list"
-								onClick={() => controllers.dataView.changeView('list')}
-								active={controllers.dataView.currView === 'list'}
-								outline
-							>
-								<i className="fas fa-list" aria-hidden="true"></i> List
-							</Button>
-							<Button
-								color="dark"
-								data-tip="Change view as table"
-								onClick={() => controllers.dataView.changeView('table')}
-								active={controllers.dataView.currView === 'table'}
-								outline
-							>
-								<i className="fas fa-table" aria-hidden="true"></i> Table
-							</Button>
-						</ButtonGroup>
-					</Col>
-					<div className="d-block d-md-none clearfix mt-1"></div>
-					<Col className="text-md-end">
-						{/* Selection Operation */}
-						<ButtonGroup>
-							<ButtonDropdown
-								isOpen={selectOptionsOpen}
-								toggle={toggleSelectOptions}
-							>
-								<DropdownToggle
-									color="success"
-									size="sm"
-									data-tip="Select multiple todos"
-									caret
-								>
-									<i className="far fa-check-square" aria-hidden="true"></i>{' '}
-									Select
-								</DropdownToggle>
-								<DropdownMenu>
-									<DropdownItem>All</DropdownItem>
-									<DropdownItem>Not Started</DropdownItem>
-									<DropdownItem>Running</DropdownItem>
-									<DropdownItem>Completed</DropdownItem>
-								</DropdownMenu>
-							</ButtonDropdown>
-							{/* Operations \w Selected todos */}
-							<ButtonDropdown
-								isOpen={operationsWSelectedOpen}
-								toggle={toggleOperationWSelected}
-							>
-								<DropdownToggle
-									color="success"
-									size="sm"
-									data-tip="Operation with selected todos"
-									caret
-									disabled
-								>
-									With Selected
-								</DropdownToggle>
-								<DropdownMenu>
-									<DropdownItem>Start All</DropdownItem>
-									<DropdownItem>Complete All</DropdownItem>
-									<DropdownItem>Incomplete All</DropdownItem>
-									<DropdownItem divider />
-									<DropdownItem className="text-danger">
-										{' '}
-										Clear All
-									</DropdownItem>
-								</DropdownMenu>
-							</ButtonDropdown>
-						</ButtonGroup>{' '}
-						{/* Export */}
-						<ButtonDropdown isOpen={exportFileOpen} toggle={toggleExportFile}>
-							<DropdownToggle
-								color="warning"
-								size="sm"
-								data-tip="Select multiple todos"
-								caret
-							>
-								<i className="fa fa-file-export" aria-hidden="true"></i> Export
-							</DropdownToggle>
-							<DropdownMenu>
-								<DropdownItem>
-									<i className="fas fa-file-excel" aria-hidden="true"></i>{' '}
-									Export as Excel
-								</DropdownItem>
-								<DropdownItem>
-									<i className="fas fa-file-csv" aria-hidden="true"></i> Export
-									as CSV
-								</DropdownItem>
-							</DropdownMenu>
-						</ButtonDropdown>{' '}
-						{/* Open AddTodoModal */}
-						<Button
-							color="primary"
-							data-tip="Create a new todo"
-							size="sm"
-							onClick={() => {
-								controllers.openAddTodo.toggle();
-								//Focus after opening addTodoModal
-								setTimeout(() => {
-									document.querySelector('#addTodo #title').focus();
-								}, 500);
-							}}
-						>
-							<i className="fa fa-plus" aria-hidden="true"></i> Add
-						</Button>
-					</Col>
+					<Controllers controllers={controllers} />
 				</Row>
 				{/* Data View */}
 				<Row>
@@ -218,6 +41,7 @@ const TodoApp = ({ data, newTodo, controllers, onSelect, onChangeStatus }) => {
 							/>
 						)}
 					</Col>
+
 					{/* Modal: AddTodoForm */}
 					<CustomModal
 						id="addTodoModal"
