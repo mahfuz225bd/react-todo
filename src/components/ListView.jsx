@@ -18,22 +18,22 @@ function ListView({ todos, onSelect, onChangeStatus }) {
 					{todos.map((todo, index) => (
 						<ListGroupItem
 							className={`d-flex justify-content-start align-items-start user-select-none ${
-								todo.selected && 'bg-light'
+								todo.selected && 'bg-dark bg-opacity-10'
 							}`}
 							key={index}
 							action
-							onClick={() => onSelect(todo.id)}
 						>
 							<CustomInput
 								id="chkSelect"
 								type="checkbox"
 								className="align-self-center"
+								style={{transform: 'scale(2)'}}
 								data-tip="Select todo"
 								data-place="right"
 								checked={todo.selected}
 								onChange={() => onSelect(todo.id)}
 							/>
-							<div className="ms-2">
+							<div className="ms-3">
 								<ListGroupItemHeading>{todo.title}</ListGroupItemHeading>
 								<ListGroupItemText className="text-muted">
 									{todo.datetime}
@@ -95,7 +95,7 @@ ListView.propTypes = {
 		})
 	).isRequired,
 	onSelect: PropTypes.func.isRequired,
-	onChangeStatus: PropTypes.func,
+	onChangeStatus: PropTypes.func.isRequired,
 };
 
 export default ListView;

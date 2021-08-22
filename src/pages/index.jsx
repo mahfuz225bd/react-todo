@@ -4,6 +4,7 @@ import { Container } from 'reactstrap';
 import ReactTooltip from 'react-tooltip';
 
 import formatedDateTime from '../assets/js/formattedDateTime';
+import containsInArray from '../assets/js/Error.ContainsInArray';
 
 import TodoApp from '../components/TodoApp';
 
@@ -60,6 +61,7 @@ class Home extends Component {
 			searchValue: '',
 
 			filter: 'all',
+			filterDate: 'all',
 			sort: 'asc',
 			currView: 'list',
 		};
@@ -67,12 +69,12 @@ class Home extends Component {
 		this.handleChange = this.handleChange.bind(this);
 		this.handleCheckbox = this.handleCheckbox.bind(this);
 
-		this.changeView = this.changeView.bind(this);
+		this.handleChangeView = this.handleChangeView.bind(this);
+		this.toggleAddTodoModal = this.toggleAddTodoModal.bind(this);
 
 		this.handleSelect = this.handleSelect.bind(this);
 		this.handleStatus = this.handleStatus.bind(this);
 
-		this.toggleAddTodoModal = this.toggleAddTodoModal.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
 	}
 
@@ -141,6 +143,19 @@ class Home extends Component {
 		this.setState({ data: newData });
 	}
 
+	handleFilter(value) {}
+
+	handleChangeView(value) {
+		const views = ['list', 'table'];
+		const isValid = containsInArray(views, value);
+		
+		if (isValid) {
+			this.setState({
+				currView: value,
+			});
+		}
+	}
+
 	toggleAddTodoModal() {
 		this.setState({
 			openAddTodo: !this.state.openAddTodo,
@@ -176,18 +191,11 @@ class Home extends Component {
 		localStorage.setItem('currID', getID + 1);
 	}
 
-	changeView(value) {
-		this.setState({
-			currView: value,
-		});
-	}
-
 	render() {
-		const { data, newTodo, openAddTodo } = this.state;
+		const { data, newTodo, currView, openAddTodo } = this.state;
 		return (
 			<Container fluid>
 				{/* Add Todo */}
-				{/* <button onClick={this.toggleAddTodoModal}>Add</button> */}
 				<TodoApp
 					data={data}
 					newTodo={{
@@ -198,8 +206,8 @@ class Home extends Component {
 					}}
 					controllers={{
 						dataView: {
-							currView: this.state.currView,
-							changeView: this.changeView,
+							currView: currView,
+							changeView: this.handleChangeView,
 						},
 						openAddTodo: {
 							isOpen: openAddTodo,
