@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 
-import { Container } from 'reactstrap';
 import ReactTooltip from 'react-tooltip';
 
 import formatedDateTime from '../assets/js/formattedDateTime';
-import containsInArray from '../assets/js/Error.ContainsInArray';
+import containsInArray from '../assets/js/error.ContainsInArray';
 
 import TodoApp from '../components/TodoApp';
 
@@ -13,7 +12,7 @@ if (!localStorage.currID && !localStorage.data) {
 	localStorage.setItem('data', '[]');
 
 	const getData = JSON.parse(localStorage.getItem('data'));
-	localStorage.setItem('currID', getData[getData.length - 1] || 0);
+	localStorage.setItem('currID', getData[getData.length - 1] || 1);
 }
 
 const getData = () => {
@@ -64,6 +63,7 @@ class Home extends Component {
 		this.handleFilterDate = this.handleFilterDate.bind(this);
 		this.handleSort = this.handleSort.bind(this);
 		this.handleChangeView = this.handleChangeView.bind(this);
+		this.performSelection = this.performSelection.bind(this);
 		this.toggleAddTodoModal = this.toggleAddTodoModal.bind(this);
 
 		this.handleSelect = this.handleSelect.bind(this);
@@ -95,7 +95,7 @@ class Home extends Component {
 
 		const { title, description, started } = this.state.newTodo;
 
-		const data = [...JSON.parse(localStorage.getItem('data'))];
+		const data = JSON.parse(localStorage.getItem('data'));
 		const getID = Number(localStorage.getItem('currID'));
 
 		data.push({
@@ -107,20 +107,20 @@ class Home extends Component {
 			completed: false,
 		});
 
-		// Set data
+		// Set data to localStorage
 		localStorage.setItem('data', JSON.stringify(data));
 
-		// Set state (init)
-		this.setState({ data, newTodo: initNewTodo });
+		// Set data + initNewTodo to state
+		this.setState({ data: getData(), newTodo: initNewTodo });
 
 		// Increment id
 		localStorage.setItem('currID', getID + 1);
 	}
 
 	handleSelect(targetId) {
-		const newData = [...this.state.data];
+		const newData = this.state.data;
 
-		newData.find((each) => {
+		newData.forEach((each) => {
 			if (each.id === targetId) {
 				each.selected = !each.selected;
 			}
@@ -133,10 +133,10 @@ class Home extends Component {
 		const allStutus = ['start', 'complete', 'incomplete'];
 
 		if (containsInArray(allStutus, to)) {
-			const newData = [...this.state.data];
+			const newData = this.state.data;
 
 			if (to === 'start') {
-				newData.find((each) => {
+				newData.forEach((each) => {
 					if (each.id === targetId) {
 						each.started = true;
 					}
@@ -144,7 +144,7 @@ class Home extends Component {
 			}
 
 			if (to === 'complete') {
-				newData.find((each) => {
+				newData.forEach((each) => {
 					if (each.id === targetId) {
 						each.completed = true;
 					}
@@ -152,7 +152,7 @@ class Home extends Component {
 			}
 
 			if (to === 'incomplete') {
-				newData.find((each) => {
+				newData.forEach((each) => {
 					if (each.id === targetId) {
 						each.completed = false;
 						each.started = false;
@@ -224,6 +224,103 @@ class Home extends Component {
 		});
 	}
 
+	performSearch(searchValue) {
+		const targetValue = searchValue.toLowerCase();
+		return this.state.data.filter((each) =>
+			each.title.toLowerCase().includes(targetValue)
+		);
+	}
+
+	performFilter(data) {
+		// ['all', 'pending', 'running', 'completed'];
+
+		switch (this.state.filter) {
+			case 'pending':
+				return data.filter(
+					(each) => each.started === false && each.completed === false
+				);
+			case 'running':
+				return data.filter(
+					(each) => each.started === true && each.completed === false
+				);
+			case 'completed':
+				return data.filter(
+					(each) => each.started === true && each.completed === true
+				);
+			default:
+				return data;
+		}
+	}
+
+	performFilterDate(data) {
+		// ['all', 'today', 'last7Days', 'last15Days', 'thisMonth']
+
+		switch (this.state.filterDate) {
+			case 'today':
+				return;
+			case 'last7Days':
+				return;
+			case 'last15Days':
+				return;
+			case 'thisMonth':
+				return;
+			default:
+				return data;
+		}
+	}
+
+	performSort(data) {
+		// ['latest', 'oldest']
+
+		switch (this.state.sort) {
+			case 'latest':
+				return data.sort((x, y) => y.id - x.id);
+			case 'oldest':
+				return data.sort((x, y) => x.id - y.id);
+			default:
+				break;
+		}
+	}
+
+	performSelection(value) {
+		let newData = this.state.data;
+
+		const selections = ['all', 'notStarted', 'running', 'completed'];
+
+		if (containsInArray(selections, value)) {
+			switch (value) {
+				case 'notStarted':
+					newData.forEach((each) => {
+						if (each.started === false) {
+							each.selected = true;
+						}
+					});
+					break;
+				case 'running':
+					newData.forEach((each) => {
+						if (each.started === true && each.completed === false) {
+							each.selected = true;
+						}
+					});
+					break;
+				case 'completed':
+					newData.forEach((each) => {
+						if (each.started === true && each.completed === true) {
+							each.selected = true;
+						}
+					});
+					break;
+				default:
+					newData.map((each) => (each.selected = true));
+					break;
+			}
+		}
+
+		this.setState({
+			data: newData,
+		});
+	}
+
 	render() {
 		const {
 			data,
@@ -235,11 +332,18 @@ class Home extends Component {
 			currView,
 			openAddTodo,
 		} = this.state;
+
+		let newData = this.performSearch(searchValue);
+		newData = this.performFilter(newData);
+		newData = this.performSort(newData);
+		// performFilterDate
+		// newData = this.performSort(sort);
+
 		return (
-			<Container fluid>
+			<div>
 				{/* Add Todo */}
 				<TodoApp
-					data={data}
+					data={newData}
 					newTodo={{
 						newTodoObj: newTodo,
 						onChangeInput: this.handleChange,
@@ -268,6 +372,7 @@ class Home extends Component {
 						},
 						selection: {
 							data: data,
+							performSelection: this.performSelection,
 						},
 						exportFile: {
 							data: data,
@@ -281,7 +386,7 @@ class Home extends Component {
 					onChangeStatus={this.handleStatus}
 				/>
 				<ReactTooltip />
-			</Container>
+			</div>
 		);
 	}
 }

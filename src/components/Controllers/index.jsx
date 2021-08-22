@@ -50,8 +50,11 @@ function Controllers({ controllers }) {
 				</Col>
 				<div className="clearfix d-block d-md-none mt-1"></div>
 				<Col className="text-md-end">
-					<SelectionOperation data={selection.data} /> <Export />{' '}
-					<AddTodoButton openAddTodo={openAddTodo} />
+					<SelectionOperation
+						data={selection.data}
+						performSelection={selection.performSelection}
+					/>{' '}
+					<Export /> <AddTodoButton openAddTodo={openAddTodo} />
 				</Col>
 			</Row>
 		</Container>

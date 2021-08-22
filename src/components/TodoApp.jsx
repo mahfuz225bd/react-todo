@@ -60,7 +60,7 @@ const TodoApp = ({ data, newTodo, controllers, onSelect, onChangeStatus }) => {
 								data-tip="Add (Ctrl + enter)"
 								onClick={() => {
 									submitAddTodoForm();
-									//After submitting, toggle to close addTodoModal
+									// After submitting, toggle to close addTodoModal
 									if (
 										document.querySelector('#addTodo #title[required]').value
 									) {
@@ -87,7 +87,6 @@ const TodoApp = ({ data, newTodo, controllers, onSelect, onChangeStatus }) => {
 					<AddTodoForm
 						newTodoObj={newTodo.newTodoObj}
 						onChangeInput={newTodo.onChangeInput}
-						onChangeCheckbox={newTodo.onChangeCheckbox}
 						onSubmit={newTodo.onSubmit}
 					/>
 				</CustomModal>

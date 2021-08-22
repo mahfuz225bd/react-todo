@@ -8,7 +8,7 @@ import {
 	DropdownItem,
 } from 'reactstrap';
 
-function SelectionOperation({ data }) {
+function SelectionOperation({ data, performSelection, performOperation }) {
 	const [selectOptionsOpen, setSelectOptionsOpen] = useState(false);
 	const toggleSelectOptions = () => setSelectOptionsOpen(!selectOptionsOpen);
 
@@ -29,10 +29,18 @@ function SelectionOperation({ data }) {
 						<i className="far fa-check-square" aria-hidden="true"></i> Select
 					</DropdownToggle>
 					<DropdownMenu>
-						<DropdownItem>All</DropdownItem>
-						<DropdownItem>Not Started</DropdownItem>
-						<DropdownItem>Running</DropdownItem>
-						<DropdownItem>Completed</DropdownItem>
+						<DropdownItem onClick={() => performSelection('all')}>
+							All
+						</DropdownItem>
+						<DropdownItem onClick={() => performSelection('notStarted')}>
+							Not Started
+						</DropdownItem>
+						<DropdownItem onClick={() => performSelection('running')}>
+							Running
+						</DropdownItem>
+						<DropdownItem onClick={() => performSelection('completed')}>
+							Completed
+						</DropdownItem>
 					</DropdownMenu>
 				</ButtonDropdown>
 				{/* Operations \w Selected todos */}

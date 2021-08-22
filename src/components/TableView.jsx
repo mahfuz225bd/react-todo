@@ -90,7 +90,7 @@ TableView.propTypes = {
 	todos: PropTypes.arrayOf(
 		PropTypes.shape({
 			selected: PropTypes.bool.isRequired,
-			id: PropTypes.number,
+			id: PropTypes.number.isRequired,
 			title: PropTypes.string.isRequired,
 			description: PropTypes.string,
 			datetime: PropTypes.string.isRequired,

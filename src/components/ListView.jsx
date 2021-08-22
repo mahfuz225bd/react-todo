@@ -27,7 +27,7 @@ function ListView({ todos, onSelect, onChangeStatus }) {
 								id="chkSelect"
 								type="checkbox"
 								className="align-self-center"
-								style={{transform: 'scale(2)'}}
+								style={{ transform: 'scale(2)' }}
 								data-tip="Select todo"
 								data-place="right"
 								checked={todo.selected}
@@ -86,7 +86,7 @@ ListView.propTypes = {
 	todos: PropTypes.arrayOf(
 		PropTypes.shape({
 			selected: PropTypes.bool.isRequired,
-			id: PropTypes.number,
+			id: PropTypes.number.isRequired,
 			title: PropTypes.string.isRequired,
 			description: PropTypes.string,
 			datetime: PropTypes.string.isRequired,
