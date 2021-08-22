@@ -10,38 +10,28 @@ import TodoApp from '../components/TodoApp';
 
 // Setting up currID and data, if not found
 if (!localStorage.currID && !localStorage.data) {
-	localStorage.setItem('currID', 4);
-	localStorage.setItem(
-		'data',
-		`[{
-		"selected":false,
-		"id":1,
-		"title":"New todo",
-		"description":"About todo",
-		"datetime":"Wed, Aug 18 2021, 12:20 AM",
-		"started":false,
-		"completed":false
- },
- {
-		"selected":false,
-		"id":2,
-		"title":"Another todo",
-		"description":"someting about bla bla bal....",
-		"datetime":"Wed, Aug 18 2021, 12:20 AM",
-		"started":true,
-		"completed":false
- },
- {
-		"selected":false,
-		"id":3,
-		"title":"Third one",
-		"description":"About todo",
-		"datetime":"Wed, Aug 18 2021, 12:21 AM",
-		"started":true,
-		"completed":true
- }]`
-	);
+	localStorage.setItem('data', '[]');
+
+	const getData = JSON.parse(localStorage.getItem('data'));
+	localStorage.setItem('currID', getData[getData.length - 1] || 0);
 }
+
+const getData = () => {
+	const getLocalStorageData = JSON.parse(localStorage.getItem('data'));
+	const result = [];
+	getLocalStorageData.forEach((each) => {
+		result.push({
+			selected: false,
+			id: each.id,
+			title: each.title,
+			datetime: each.datetime,
+			description: each.description,
+			started: each.started,
+			completed: each.completed,
+		});
+	});
+	return result;
+};
 
 const initNewTodo = {
 	title: '',
@@ -53,7 +43,7 @@ class Home extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			data: JSON.parse(localStorage.getItem('data')),
+			data: getData(),
 			newTodo: initNewTodo,
 
 			searchValue: '',
@@ -67,8 +57,9 @@ class Home extends Component {
 		};
 
 		this.handleChange = this.handleChange.bind(this);
-		this.handleCheckbox = this.handleCheckbox.bind(this);
+		this.handleSubmit = this.handleSubmit.bind(this);
 
+		this.handleSearch = this.handleSearch.bind(this);
 		this.handleFilter = this.handleFilter.bind(this);
 		this.handleFilterDate = this.handleFilterDate.bind(this);
 		this.handleSort = this.handleSort.bind(this);
@@ -77,26 +68,53 @@ class Home extends Component {
 
 		this.handleSelect = this.handleSelect.bind(this);
 		this.handleStatus = this.handleStatus.bind(this);
-
-		this.handleSubmit = this.handleSubmit.bind(this);
 	}
 
 	handleChange(event) {
-		this.setState({
-			newTodo: {
-				...this.state.newTodo,
-				[event.target.name]: event.target.value,
-			},
-		});
+		switch (event.target.type) {
+			case 'checkbox':
+				this.setState({
+					newTodo: {
+						...this.state.newTodo,
+						[event.target.name]: event.target.checked,
+					},
+				});
+				break;
+			default:
+				this.setState({
+					newTodo: {
+						...this.state.newTodo,
+						[event.target.name]: event.target.value,
+					},
+				});
+		}
 	}
 
-	handleCheckbox(event) {
-		this.setState({
-			newTodo: {
-				...this.state.newTodo,
-				[event.target.name]: event.target.checked,
-			},
+	handleSubmit(event) {
+		event.preventDefault();
+
+		const { title, description, started } = this.state.newTodo;
+
+		const data = [...JSON.parse(localStorage.getItem('data'))];
+		const getID = Number(localStorage.getItem('currID'));
+
+		data.push({
+			id: getID,
+			title: title,
+			datetime: formatedDateTime(),
+			description: description,
+			started: started,
+			completed: false,
 		});
+
+		// Set data
+		localStorage.setItem('data', JSON.stringify(data));
+
+		// Set state (init)
+		this.setState({ data, newTodo: initNewTodo });
+
+		// Increment id
+		localStorage.setItem('currID', getID + 1);
 	}
 
 	handleSelect(targetId) {
@@ -150,6 +168,12 @@ class Home extends Component {
 		}
 	}
 
+	handleSearch(event) {
+		this.setState({
+			searchValue: event.target.value,
+		});
+	}
+
 	handleFilter(value) {
 		const filterValues = ['all', 'pending', 'running', 'completed'];
 		if (containsInArray(filterValues, value)) {
@@ -200,37 +224,17 @@ class Home extends Component {
 		});
 	}
 
-	handleSubmit(event) {
-		event.preventDefault();
-
-		const { title, description, started } = this.state.newTodo;
-
-		const data = JSON.parse(localStorage.getItem('data'));
-		const getID = Number(localStorage.getItem('currID'));
-
-		data.push({
-			selected: false,
-			id: getID,
-			title: title,
-			datetime: formatedDateTime(),
-			description: description,
-			started: started,
-			completed: false,
-		});
-
-		// Set data
-		localStorage.setItem('data', JSON.stringify(data));
-
-		// Set state
-		this.setState({ data, newTodo: initNewTodo });
-
-		// Increment id
-		localStorage.setItem('currID', getID + 1);
-	}
-
 	render() {
-		const { data, newTodo, filter, filterDate, sort, currView, openAddTodo } =
-			this.state;
+		const {
+			data,
+			newTodo,
+			searchValue,
+			filter,
+			filterDate,
+			sort,
+			currView,
+			openAddTodo,
+		} = this.state;
 		return (
 			<Container fluid>
 				{/* Add Todo */}
@@ -239,10 +243,13 @@ class Home extends Component {
 					newTodo={{
 						newTodoObj: newTodo,
 						onChangeInput: this.handleChange,
-						onChangeCheckbox: this.handleCheckbox,
 						onSubmit: this.handleSubmit,
 					}}
 					controllers={{
+						search: {
+							value: searchValue,
+							onChangeSearchValue: this.handleSearch,
+						},
 						filter: {
 							value: filter,
 							changeFilter: this.handleFilter,
@@ -258,6 +265,12 @@ class Home extends Component {
 						dataView: {
 							currView: currView,
 							changeView: this.handleChangeView,
+						},
+						selection: {
+							data: data,
+						},
+						exportFile: {
+							data: data,
 						},
 						openAddTodo: {
 							isOpen: openAddTodo,

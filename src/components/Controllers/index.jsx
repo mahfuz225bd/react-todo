@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 import { Container, Row, Col } from 'reactstrap';
 
+import SearchPanel from './SearchPanel';
 import Filter from './Filter';
 import FilterDate from './FilterDate';
 import Sort from './Sort';
@@ -12,13 +13,26 @@ import Export from './Export';
 import AddTodoButton from './AddTodoButton';
 
 function Controllers({ controllers }) {
-	const { search, filter, filterDate, sort, dataView, openAddTodo } =
-		controllers;
+	const {
+		search,
+		filter,
+		filterDate,
+		sort,
+		dataView,
+		selection,
+		exportFiles,
+		openAddTodo,
+	} = controllers;
 	return (
 		<Container>
 			<Row>
-				<Col>Search Panel</Col>
-				<div className="clearfix mt-1"></div>
+				<Col>
+					<SearchPanel
+						searchValue={search.value}
+						onChangeSearchValue={search.onChangeSearchValue}
+					/>
+				</Col>
+				<div className="clearfix mt-2"></div>
 				<Col>
 					<Filter value={filter.value} setValue={filter.changeFilter} />{' '}
 					<FilterDate
@@ -36,7 +50,7 @@ function Controllers({ controllers }) {
 				</Col>
 				<div className="clearfix d-block d-md-none mt-1"></div>
 				<Col className="text-md-end">
-					<SelectionOperation /> <Export />{' '}
+					<SelectionOperation data={selection.data} /> <Export />{' '}
 					<AddTodoButton openAddTodo={openAddTodo} />
 				</Col>
 			</Row>

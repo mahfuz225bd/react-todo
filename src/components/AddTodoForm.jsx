@@ -3,12 +3,7 @@ import PropTypes from 'prop-types';
 
 import { Col, Form, FormGroup, Label, Input } from 'reactstrap';
 
-function AddTodoForm({
-	newTodoObj,
-	onChangeInput,
-	onChangeCheckbox,
-	onSubmit,
-}) {
+function AddTodoForm({ newTodoObj, onChangeInput, onSubmit }) {
 	return (
 		<div>
 			<Form id="addTodo" onSubmit={onSubmit} autoComplete="off">
@@ -55,7 +50,7 @@ function AddTodoForm({
 							name="started"
 							id="started"
 							checked={newTodoObj.started}
-							onChange={onChangeCheckbox}
+							onChange={onChangeInput}
 						/>
 					</Col>
 					<button type="submit" style={{ display: 'none' }}></button>

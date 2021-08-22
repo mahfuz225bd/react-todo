@@ -8,13 +8,14 @@ import {
 	DropdownItem,
 } from 'reactstrap';
 
-function SelectionOperation(props) {
+function SelectionOperation({ data }) {
 	const [selectOptionsOpen, setSelectOptionsOpen] = useState(false);
 	const toggleSelectOptions = () => setSelectOptionsOpen(!selectOptionsOpen);
 
 	const [operationsWSelectedOpen, setOperationsWSelectedOpen] = useState(false);
 	const toggleOperationWSelected = () =>
 		setOperationsWSelectedOpen(!operationsWSelectedOpen);
+
 	return (
 		<>
 			<ButtonGroup>
@@ -44,14 +45,48 @@ function SelectionOperation(props) {
 						size="sm"
 						data-tip="Operation with selected todos"
 						caret
-						disabled
+						// If selected any item
+						disabled={!data.some((each) => each.selected === true)}
 					>
 						With Selected
 					</DropdownToggle>
 					<DropdownMenu>
-						<DropdownItem>Start All</DropdownItem>
-						<DropdownItem>Complete All</DropdownItem>
-						<DropdownItem>Incomplete All</DropdownItem>
+						<DropdownItem
+							// If any selected item, ready to start
+							disabled={
+								!data.some(
+									(each) => each.selected === true && each.started === false
+								)
+							}
+						>
+							Start All
+						</DropdownItem>
+						<DropdownItem
+							// If any selected item, ready to complete
+							disabled={
+								!data.some(
+									(each) =>
+										each.selected === true &&
+										each.started === true &&
+										each.completed === false
+								)
+							}
+						>
+							Complete All
+						</DropdownItem>
+						<DropdownItem
+							// If any selected item, ready to incomplete
+							disabled={
+								!data.some(
+									(each) =>
+										each.selected === true &&
+										each.started === true &&
+										each.completed === true
+								)
+							}
+						>
+							Incomplete All
+						</DropdownItem>
 						<DropdownItem divider />
 						<DropdownItem className="text-danger"> Clear All</DropdownItem>
 					</DropdownMenu>

@@ -7,7 +7,7 @@ import {
 	DropdownItem,
 } from 'reactstrap';
 
-function Export(props) {
+function Export({ data }) {
 	const [exportFileOpen, setExportFileOpen] = useState(false);
 	const toggleExportFile = () => setExportFileOpen(!exportFileOpen);
 	return (
@@ -16,17 +16,17 @@ function Export(props) {
 				<DropdownToggle
 					color="warning"
 					size="sm"
-					data-tip="Select multiple todos"
+					data-tip="Export all todos"
 					caret
 				>
 					<i className="fa fa-file-export" aria-hidden="true"></i> Export
 				</DropdownToggle>
 				<DropdownMenu>
-					<DropdownItem>
+					<DropdownItem onClick={() => undefined}>
 						<i className="fas fa-file-excel" aria-hidden="true"></i> Export as
 						Excel
 					</DropdownItem>
-					<DropdownItem>
+					<DropdownItem onClick={() => undefined}>
 						<i className="fas fa-file-csv" aria-hidden="true"></i> Export as CSV
 					</DropdownItem>
 				</DropdownMenu>

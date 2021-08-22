@@ -9,7 +9,3 @@ export default function containsInArray(values, value) {
 
 	return isContainsInValues;
 }
-
-let x = containsInArray([1, 2, 3, 4], 4);
-
-console.log(x);
