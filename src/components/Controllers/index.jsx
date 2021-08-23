@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { Container, Row, Col } from 'reactstrap';
 
 import SearchPanel from './SearchPanel';
-import Filter from './Filter';
+import FilterStatus from './FilterStatus';
 import FilterDate from './FilterDate';
 import Sort from './Sort';
 import ChangeView from './ChangeView';
@@ -15,7 +15,7 @@ import AddTodoButton from './AddTodoButton';
 function Controllers({ controllers }) {
 	const {
 		search,
-		filter,
+		filterStatus,
 		filterDate,
 		sort,
 		dataView,
@@ -34,7 +34,10 @@ function Controllers({ controllers }) {
 				</Col>
 				<div className="clearfix mt-2"></div>
 				<Col>
-					<Filter value={filter.value} setValue={filter.changeFilter} />{' '}
+					<FilterStatus
+						value={filterStatus.value}
+						setValue={filterStatus.changeFilter}
+					/>{' '}
 					<FilterDate
 						value={filterDate.value}
 						setValue={filterDate.changeFilterDate}
@@ -52,7 +55,7 @@ function Controllers({ controllers }) {
 				<Col className="text-md-end">
 					<SelectionOperation
 						data={selection.data}
-						filterValue={selection.filterValue}
+						filterStatusValue={selection.filterStatusValue}
 						performMultiSelection={selection.performMultiSelection}
 					/>{' '}
 					<Export data={exportFiles.data} />{' '}

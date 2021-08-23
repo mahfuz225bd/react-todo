@@ -41,7 +41,7 @@ class Home extends Component {
 			newTodo: initNewTodo,
 
 			searchValue: '',
-			filter: 'all',
+			filterStatus: 'all',
 			filterDate: 'all',
 			sort: 'latest',
 
@@ -54,7 +54,7 @@ class Home extends Component {
 		this.handleSubmit = this.handleSubmit.bind(this);
 
 		this.handleSearch = this.handleSearch.bind(this);
-		this.handleFilter = this.handleFilter.bind(this);
+		this.handleFilterStatus = this.handleFilterStatus.bind(this);
 		this.handleFilterDate = this.handleFilterDate.bind(this);
 		this.handleSort = this.handleSort.bind(this);
 		this.handleChangeView = this.handleChangeView.bind(this);
@@ -175,12 +175,12 @@ class Home extends Component {
 		});
 	}
 
-	handleFilter(value) {
+	handleFilterStatus(value) {
 		const filterValues = ['all', 'pending', 'running', 'completed'];
 
 		if (containsInArray(filterValues, value)) {
 			this.setState({
-				filter: value,
+				filterStatus: value,
 			});
 		}
 	}
@@ -235,10 +235,10 @@ class Home extends Component {
 		);
 	}
 
-	performFilter(data) {
+	performFilterStatus(data) {
 		// ['all', 'pending', 'running', 'completed'];
 
-		switch (this.state.filter) {
+		switch (this.state.filterStatus) {
 			case 'pending':
 				return data.filter(
 					(each) => each.started === false && each.completed === false
@@ -335,7 +335,7 @@ class Home extends Component {
 		const {
 			newTodo,
 			searchValue,
-			filter,
+			filterStatus,
 			filterDate,
 			sort,
 			currView,
@@ -343,7 +343,7 @@ class Home extends Component {
 		} = this.state;
 
 		let newData = this.performSearch(searchValue);
-		newData = this.performFilter(newData);
+		newData = this.performFilterStatus(newData);
 		// performFilterDate
 		newData = this.performSort(newData);
 
@@ -362,9 +362,9 @@ class Home extends Component {
 							value: searchValue,
 							onChangeSearchValue: this.handleSearch,
 						},
-						filter: {
-							value: filter,
-							changeFilter: this.handleFilter,
+						filterStatus: {
+							value: filterStatus,
+							changeFilter: this.handleFilterStatus,
 						},
 						filterDate: {
 							value: filterDate,
@@ -380,7 +380,7 @@ class Home extends Component {
 						},
 						selection: {
 							data: newData,
-							filterValue: filter,
+							filterStatusValue: filterStatus,
 							performMultiSelection: this.performMultiSelection,
 							performOperation: this.performOperation,
 						},

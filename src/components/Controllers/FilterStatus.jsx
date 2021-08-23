@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import { ButtonGroup, Button } from 'reactstrap';
 
-function Filter({ value, setValue }) {
+function FilterStatus({ value, setValue }) {
 	return (
 		<>
 			<ButtonGroup className="d-inline" size="sm">
@@ -48,9 +48,9 @@ function Filter({ value, setValue }) {
 	);
 }
 
-Filter.propTypes = {
+FilterStatus.propTypes = {
 	value: PropTypes.string.isRequired,
 	setValue: PropTypes.func.isRequired,
 };
 
-export default Filter;
+export default FilterStatus;

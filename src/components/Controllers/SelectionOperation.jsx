@@ -10,7 +10,7 @@ import {
 
 function SelectionOperation({
 	data,
-	filterValue,
+	filterStatusValue,
 	performMultiSelection,
 	performOperation,
 }) {
@@ -41,7 +41,7 @@ function SelectionOperation({
 						<DropdownItem
 							onClick={() => performMultiSelection(data, 'notStarted')}
 							disabled={
-								filterValue !== 'all' ||
+								filterStatusValue !== 'all' ||
 								!data.some((each) => each.started === false)
 							}
 						>
@@ -50,7 +50,7 @@ function SelectionOperation({
 						<DropdownItem
 							onClick={() => performMultiSelection(data, 'running')}
 							disabled={
-								filterValue !== 'all' ||
+								filterStatusValue !== 'all' ||
 								!data.some(
 									(each) => each.started === true && each.completed === false
 								)
@@ -61,7 +61,7 @@ function SelectionOperation({
 						<DropdownItem
 							onClick={() => performMultiSelection(data, 'completed')}
 							disabled={
-								filterValue !== 'all' ||
+								filterStatusValue !== 'all' ||
 								!data.some(
 									(each) => each.started === true && each.completed === true
 								)
@@ -132,7 +132,7 @@ function SelectionOperation({
 						</DropdownItem>
 						<DropdownItem divider />
 						<DropdownItem className="text-danger">
-							<i class="fas fa-trash" aria-hidden="true"></i> Delete
+							<i className="fas fa-trash" aria-hidden="true"></i> Delete
 						</DropdownItem>
 					</DropdownMenu>
 				</ButtonDropdown>
