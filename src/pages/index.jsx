@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import ReactTooltip from 'react-tooltip';
 
-import formatedDateTime from '../assets/js/formattedDateTime';
+import formattedDateTime from '../assets/js/formattedDateTime';
 import containsInArray from '../assets/js/error.ContainsInArray';
 
 import TodoApp from '../components/TodoApp';
@@ -60,7 +60,7 @@ class Home extends Component {
 		this.resetSearchFilterSort = this.resetSearchFilterSort.bind(this);
 		this.handleChangeView = this.handleChangeView.bind(this);
 		this.performMultiSelection = this.performMultiSelection.bind(this);
-		this.performOperation = this.performOperation.bind(this);
+		this.performSelectionOperation = this.performSelectionOperation.bind(this);
 		this.toggleAddTodoModal = this.toggleAddTodoModal.bind(this);
 
 		this.handleSelect = this.handleSelect.bind(this);
@@ -98,7 +98,7 @@ class Home extends Component {
 		data.push({
 			id: getID,
 			title: title,
-			datetime: formatedDateTime(),
+			datetime: formattedDateTime(),
 			description: description,
 			started: started,
 			completed: false,
@@ -127,9 +127,9 @@ class Home extends Component {
 	}
 
 	handleStatus(targetId, to) {
-		const allStutus = ['start', 'complete', 'incomplete'];
+		const allStatus = ['start', 'complete', 'incomplete'];
 
-		if (containsInArray(allStutus, to)) {
+		if (containsInArray(allStatus, to)) {
 			const newData = this.state.data;
 
 			switch (to) {
@@ -336,10 +336,10 @@ class Home extends Component {
 					break;
 			}
 		}
-		this.setState({ data });
+		this.setState({ data: this.state.data });
 	}
 
-	performOperation() {}
+	performSelectionOperation() {}
 
 	render() {
 		const {
@@ -396,7 +396,7 @@ class Home extends Component {
 							data: newData,
 							filterStatusValue: filterStatus,
 							performMultiSelection: this.performMultiSelection,
-							performOperation: this.performOperation,
+							performSelectionOperation: this.performSelectionOperation,
 						},
 						exportFiles: {
 							data: newData,

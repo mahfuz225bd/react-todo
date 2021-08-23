@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import { Container, Col, Row, Button } from 'reactstrap';
 import Controllers from './Controllers';
@@ -30,7 +31,7 @@ const TodoApp = ({ data, newTodo, controllers, onSelect, onChangeStatus }) => {
 
 	return (
 		<>
-			<Container className="px-2 px-md-5">
+			<Container className="px-2 px-md-5 mb-5">
 				<Row className="my-3 my-md-5">
 					<h2 className="display-4 text-center">React Todo App</h2>
 				</Row>
@@ -93,6 +94,22 @@ const TodoApp = ({ data, newTodo, controllers, onSelect, onChangeStatus }) => {
 			</Container>
 		</>
 	);
+};
+
+TodoApp.propTypes = {
+	data: PropTypes.arrayOf(PropTypes.object).isRequired,
+	newTodo: PropTypes.shape({
+		newTodoObj: PropTypes.object.isRequired,
+		onChangeInput: PropTypes.func.isRequired,
+		onSubmit: PropTypes.func.isRequired,
+	}).isRequired,
+	controllers: PropTypes.object.isRequired,
+	openAddTodo: PropTypes.shape({
+		isOpen: PropTypes.bool.isRequired,
+		toggle: PropTypes.func.isRequired,
+	}).isRequired,
+	onSelect: PropTypes.func.isRequired,
+	onChangeStatus: PropTypes.func.isRequired,
 };
 
 export default TodoApp;
