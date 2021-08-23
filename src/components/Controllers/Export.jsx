@@ -17,6 +17,7 @@ function Export({ data }) {
 					color="warning"
 					size="sm"
 					data-tip="Export all todos"
+					disabled={data.length === 0}
 					caret
 				>
 					<i className="fa fa-file-export" aria-hidden="true"></i> Export

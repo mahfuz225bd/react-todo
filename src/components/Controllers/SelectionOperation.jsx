@@ -8,7 +8,12 @@ import {
 	DropdownItem,
 } from 'reactstrap';
 
-function SelectionOperation({ data, performSelection, performOperation }) {
+function SelectionOperation({
+	data,
+	filterValue,
+	performMultiSelection,
+	performOperation,
+}) {
 	const [selectOptionsOpen, setSelectOptionsOpen] = useState(false);
 	const toggleSelectOptions = () => setSelectOptionsOpen(!selectOptionsOpen);
 
@@ -24,22 +29,39 @@ function SelectionOperation({ data, performSelection, performOperation }) {
 						color="success"
 						size="sm"
 						data-tip="Select multiple todos"
+						disabled={data.length === 0}
 						caret
 					>
 						<i className="far fa-check-square" aria-hidden="true"></i> Select
 					</DropdownToggle>
 					<DropdownMenu>
-						<DropdownItem onClick={() => performSelection('all')}>
+						<DropdownItem onClick={() => performMultiSelection(data, 'all')}>
 							All
 						</DropdownItem>
-						<DropdownItem onClick={() => performSelection('notStarted')}>
+						<DropdownItem
+							onClick={() => performMultiSelection(data, 'notStarted')}
+							disabled={filterValue !== 'all'}
+						>
 							Not Started
 						</DropdownItem>
-						<DropdownItem onClick={() => performSelection('running')}>
+						<DropdownItem
+							onClick={() => performMultiSelection(data, 'running')}
+							disabled={filterValue !== 'all'}
+						>
 							Running
 						</DropdownItem>
-						<DropdownItem onClick={() => performSelection('completed')}>
+						<DropdownItem
+							onClick={() => performMultiSelection(data, 'completed')}
+							disabled={filterValue !== 'all'}
+						>
 							Completed
+						</DropdownItem>
+						<DropdownItem divider />
+						<DropdownItem
+							onClick={() => performMultiSelection(data, 'unselectAll')}
+							disabled={!data.some((each) => each.selected === true)}
+						>
+							Unselect All
 						</DropdownItem>
 					</DropdownMenu>
 				</ButtonDropdown>
@@ -67,7 +89,7 @@ function SelectionOperation({ data, performSelection, performOperation }) {
 								)
 							}
 						>
-							Start All
+							Start
 						</DropdownItem>
 						<DropdownItem
 							// If any selected item, ready to complete
@@ -80,7 +102,7 @@ function SelectionOperation({ data, performSelection, performOperation }) {
 								)
 							}
 						>
-							Complete All
+							Complete
 						</DropdownItem>
 						<DropdownItem
 							// If any selected item, ready to incomplete
@@ -93,10 +115,12 @@ function SelectionOperation({ data, performSelection, performOperation }) {
 								)
 							}
 						>
-							Incomplete All
+							Incomplete
 						</DropdownItem>
 						<DropdownItem divider />
-						<DropdownItem className="text-danger"> Clear All</DropdownItem>
+						<DropdownItem className="text-danger">
+							<i class="fas fa-trash" aria-hidden="true"></i> Delete
+						</DropdownItem>
 					</DropdownMenu>
 				</ButtonDropdown>
 			</ButtonGroup>

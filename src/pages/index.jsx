@@ -21,12 +21,7 @@ const getData = () => {
 	getLocalStorageData.forEach((each) => {
 		result.push({
 			selected: false,
-			id: each.id,
-			title: each.title,
-			datetime: each.datetime,
-			description: each.description,
-			started: each.started,
-			completed: each.completed,
+			...each,
 		});
 	});
 	return result;
@@ -46,10 +41,10 @@ class Home extends Component {
 			newTodo: initNewTodo,
 
 			searchValue: '',
-
 			filter: 'all',
 			filterDate: 'all',
 			sort: 'latest',
+
 			currView: 'list',
 
 			openAddTodo: false,
@@ -63,7 +58,8 @@ class Home extends Component {
 		this.handleFilterDate = this.handleFilterDate.bind(this);
 		this.handleSort = this.handleSort.bind(this);
 		this.handleChangeView = this.handleChangeView.bind(this);
-		this.performSelection = this.performSelection.bind(this);
+		this.performMultiSelection = this.performMultiSelection.bind(this);
+		this.performOperation = this.performOperation.bind(this);
 		this.toggleAddTodoModal = this.toggleAddTodoModal.bind(this);
 
 		this.handleSelect = this.handleSelect.bind(this);
@@ -135,29 +131,34 @@ class Home extends Component {
 		if (containsInArray(allStutus, to)) {
 			const newData = this.state.data;
 
-			if (to === 'start') {
-				newData.forEach((each) => {
-					if (each.id === targetId) {
-						each.started = true;
-					}
-				});
-			}
+			switch (to) {
+				case 'start':
+					newData.forEach((each) => {
+						if (each.id === targetId) {
+							each.started = true;
+						}
+					});
+					break;
 
-			if (to === 'complete') {
-				newData.forEach((each) => {
-					if (each.id === targetId) {
-						each.completed = true;
-					}
-				});
-			}
+				case 'complete':
+					newData.forEach((each) => {
+						if (each.id === targetId) {
+							each.completed = true;
+						}
+					});
+					break;
 
-			if (to === 'incomplete') {
-				newData.forEach((each) => {
-					if (each.id === targetId) {
-						each.completed = false;
-						each.started = false;
-					}
-				});
+				case 'incomplete':
+					newData.forEach((each) => {
+						if (each.id === targetId) {
+							each.completed = false;
+							each.started = false;
+						}
+					});
+					break;
+
+				default:
+					break;
 			}
 
 			// Set data
@@ -176,6 +177,7 @@ class Home extends Component {
 
 	handleFilter(value) {
 		const filterValues = ['all', 'pending', 'running', 'completed'];
+
 		if (containsInArray(filterValues, value)) {
 			this.setState({
 				filter: value,
@@ -191,6 +193,7 @@ class Home extends Component {
 			'last15Days',
 			'thisMonth',
 		];
+
 		if (containsInArray(filterDateValues, value)) {
 			this.setState({
 				filterDate: value,
@@ -200,6 +203,7 @@ class Home extends Component {
 
 	handleSort(value) {
 		const sortValues = ['latest', 'oldest'];
+
 		if (containsInArray(sortValues, value)) {
 			this.setState({
 				sort: value,
@@ -282,48 +286,53 @@ class Home extends Component {
 		}
 	}
 
-	performSelection(value) {
-		let newData = this.state.data;
-
-		const selections = ['all', 'notStarted', 'running', 'completed'];
+	performMultiSelection(data, value) {
+		const selections = [
+			'all',
+			'notStarted',
+			'running',
+			'completed',
+			'unselectAll',
+		];
 
 		if (containsInArray(selections, value)) {
 			switch (value) {
 				case 'notStarted':
-					newData.forEach((each) => {
+					data.forEach((each) => {
 						if (each.started === false) {
 							each.selected = true;
 						}
 					});
 					break;
 				case 'running':
-					newData.forEach((each) => {
+					data.forEach((each) => {
 						if (each.started === true && each.completed === false) {
 							each.selected = true;
 						}
 					});
 					break;
 				case 'completed':
-					newData.forEach((each) => {
+					data.forEach((each) => {
 						if (each.started === true && each.completed === true) {
 							each.selected = true;
 						}
 					});
 					break;
+				case 'unselectAll':
+					data.map((each) => (each.selected = false));
+					break;
 				default:
-					newData.map((each) => (each.selected = true));
+					data.map((each) => (each.selected = true));
 					break;
 			}
 		}
-
-		this.setState({
-			data: newData,
-		});
+		this.setState({ data });
 	}
+
+	performOperation() {}
 
 	render() {
 		const {
-			data,
 			newTodo,
 			searchValue,
 			filter,
@@ -335,9 +344,8 @@ class Home extends Component {
 
 		let newData = this.performSearch(searchValue);
 		newData = this.performFilter(newData);
-		newData = this.performSort(newData);
 		// performFilterDate
-		// newData = this.performSort(sort);
+		newData = this.performSort(newData);
 
 		return (
 			<div>
@@ -371,11 +379,13 @@ class Home extends Component {
 							changeView: this.handleChangeView,
 						},
 						selection: {
-							data: data,
-							performSelection: this.performSelection,
+							data: newData,
+							filterValue: filter,
+							performMultiSelection: this.performMultiSelection,
+							performOperation: this.performOperation,
 						},
-						exportFile: {
-							data: data,
+						exportFiles: {
+							data: newData,
 						},
 						openAddTodo: {
 							isOpen: openAddTodo,

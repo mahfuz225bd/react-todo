@@ -31,7 +31,7 @@ const TodoApp = ({ data, newTodo, controllers, onSelect, onChangeStatus }) => {
 	return (
 		<>
 			<Container className="px-2 px-md-5">
-				<Row className="my-5">
+				<Row className="my-3 my-md-5">
 					<h2 className="display-4 text-center">React Todo App</h2>
 				</Row>
 				{/* Controllers */}
@@ -74,7 +74,7 @@ const TodoApp = ({ data, newTodo, controllers, onSelect, onChangeStatus }) => {
 								color="primary"
 								onClick={() => {
 									submitAddTodoForm();
-									//Focus for the next form input
+									// Focus for the next form input
 									document.querySelector('#addTodo #title').focus();
 								}}
 							>

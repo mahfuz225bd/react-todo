@@ -52,9 +52,11 @@ function Controllers({ controllers }) {
 				<Col className="text-md-end">
 					<SelectionOperation
 						data={selection.data}
-						performSelection={selection.performSelection}
+						filterValue={selection.filterValue}
+						performMultiSelection={selection.performMultiSelection}
 					/>{' '}
-					<Export /> <AddTodoButton openAddTodo={openAddTodo} />
+					<Export data={exportFiles.data} />{' '}
+					<AddTodoButton openAddTodo={openAddTodo} />
 				</Col>
 			</Row>
 		</Container>
