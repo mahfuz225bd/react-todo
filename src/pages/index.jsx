@@ -17,13 +17,17 @@ if (!localStorage.currID && !localStorage.data) {
 
 const getData = () => {
 	const getLocalStorageData = JSON.parse(localStorage.getItem('data'));
+
 	const result = [];
+
+	// Appending each data from localStorage to result array with `selected: false`
 	getLocalStorageData.forEach((each) => {
 		result.push({
 			selected: false,
 			...each,
 		});
 	});
+
 	return result;
 };
 
@@ -130,7 +134,7 @@ class Home extends Component {
 		const allStatus = ['start', 'complete', 'incomplete'];
 
 		if (containsInArray(allStatus, to)) {
-			const newData = this.state.data;
+			const newData = JSON.parse(localStorage.getItem('data'));
 
 			switch (to) {
 				case 'start':
@@ -162,11 +166,11 @@ class Home extends Component {
 					break;
 			}
 
-			// Set data
+			// Set data to localStorage
 			localStorage.setItem('data', JSON.stringify(newData));
 
-			// Set state
-			this.setState({ data: newData });
+			// Set data at state
+			this.setState({ data: getData() });
 		}
 	}
 
@@ -349,37 +353,63 @@ class Home extends Component {
 			'deleteAll',
 		];
 
+		const myLocalStorageData = JSON.parse(localStorage.getItem('data'));
+
 		if (containsInArray(operations, value)) {
 			switch (value) {
 				case 'startAll':
-					data.forEach((each) => {
-						if (each.selected && !each.started) {
-							each.started = true;
+					data.forEach((eachData) => {
+						if (eachData.selected) {
+							myLocalStorageData.forEach((eachLocalStorageData) => {
+								if (
+									eachData.id === eachLocalStorageData.id &&
+									!eachLocalStorageData.started
+								) {
+									eachLocalStorageData.started = true;
+								}
+							});
 						}
 					});
 					break;
 				case 'completeAll':
-					data.forEach((each) => {
-						if (each.selected && each.started && !each.completed) {
-							each.completed = true;
-						}
+					data.forEach((eachData) => {
+						myLocalStorageData.forEach((eachLocalStorageData) => {
+							if (
+								eachData.id === eachLocalStorageData.id &&
+								eachLocalStorageData.started &&
+								!eachLocalStorageData.completed
+							) {
+								eachLocalStorageData.completed = true;
+							}
+						});
 					});
 					break;
 				case 'incompleteAll':
-					data.forEach((each) => {
-						if (each.selected && each.started && each.completed) {
-							each.started = false;
-							each.completed = false;
-						}
+					data.forEach((eachData) => {
+						myLocalStorageData.forEach((eachLocalStorageData) => {
+							if (
+								eachData.id === eachLocalStorageData.id &&
+								eachLocalStorageData.started &&
+								eachLocalStorageData.completed
+							) {
+								eachLocalStorageData.started = false;
+								eachLocalStorageData.completed = false;
+							}
+						});
 					});
+					break;
+				case 'deleteAll':
 					break;
 				default:
 					break;
 			}
 		}
 
-		// Refresh data at state
-		this.setState({ data: this.state.data });
+		// Set data to localStorage
+		localStorage.setItem('data', JSON.stringify(myLocalStorageData));
+
+		// Set data at state
+		this.setState({ data: getData() });
 	}
 
 	render() {

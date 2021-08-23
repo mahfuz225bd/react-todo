@@ -135,7 +135,10 @@ function SelectionOperation({
 							Incomplete
 						</DropdownItem>
 						<DropdownItem divider />
-						<DropdownItem className="text-danger">
+						<DropdownItem
+							className="text-danger"
+							onClick={() => performSelectionOperation(data, 'deleteAll')}
+						>
 							<i className="fas fa-trash" aria-hidden="true"></i> Delete
 						</DropdownItem>
 					</DropdownMenu>
