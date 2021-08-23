@@ -40,19 +40,32 @@ function SelectionOperation({
 						</DropdownItem>
 						<DropdownItem
 							onClick={() => performMultiSelection(data, 'notStarted')}
-							disabled={filterValue !== 'all'}
+							disabled={
+								filterValue !== 'all' ||
+								!data.some((each) => each.started === false)
+							}
 						>
 							Not Started
 						</DropdownItem>
 						<DropdownItem
 							onClick={() => performMultiSelection(data, 'running')}
-							disabled={filterValue !== 'all'}
+							disabled={
+								filterValue !== 'all' ||
+								!data.some(
+									(each) => each.started === true && each.completed === false
+								)
+							}
 						>
 							Running
 						</DropdownItem>
 						<DropdownItem
 							onClick={() => performMultiSelection(data, 'completed')}
-							disabled={filterValue !== 'all'}
+							disabled={
+								filterValue !== 'all' ||
+								!data.some(
+									(each) => each.started === true && each.completed === true
+								)
+							}
 						>
 							Completed
 						</DropdownItem>
