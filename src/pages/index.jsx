@@ -57,6 +57,7 @@ class Home extends Component {
 		this.handleFilterStatus = this.handleFilterStatus.bind(this);
 		this.handleFilterDate = this.handleFilterDate.bind(this);
 		this.handleSort = this.handleSort.bind(this);
+		this.resetSearchFilterSort = this.resetSearchFilterSort.bind(this);
 		this.handleChangeView = this.handleChangeView.bind(this);
 		this.performMultiSelection = this.performMultiSelection.bind(this);
 		this.performOperation = this.performOperation.bind(this);
@@ -209,6 +210,15 @@ class Home extends Component {
 				sort: value,
 			});
 		}
+	}
+
+	resetSearchFilterSort() {
+		this.setState({
+			searchValue: '',
+			filterStatus: 'all',
+			filterDate: 'all',
+			sort: 'latest',
+		});
 	}
 
 	handleChangeView(value) {
@@ -373,6 +383,10 @@ class Home extends Component {
 						sort: {
 							value: sort,
 							toggleSort: this.handleSort,
+						},
+						clearSearchFilterSort: {
+							stateValues: { searchValue, filterStatus, filterDate, sort },
+							action: this.resetSearchFilterSort,
 						},
 						dataView: {
 							currView: currView,

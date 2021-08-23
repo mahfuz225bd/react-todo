@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 
 import {
 	ButtonDropdown,
@@ -35,5 +36,9 @@ function Export({ data }) {
 		</>
 	);
 }
+
+Export.propTypes = {
+	data: PropTypes.arrayOf(PropTypes.object).isRequired,
+};
 
 export default Export;

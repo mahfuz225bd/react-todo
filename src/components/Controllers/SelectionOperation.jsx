@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 
 import {
@@ -140,5 +141,12 @@ function SelectionOperation({
 		</>
 	);
 }
+
+SelectionOperation.propTypes = {
+	data: PropTypes.arrayOf(PropTypes.object).isRequired,
+	filterStatusValue: PropTypes.string.isRequired,
+	performMultiSelection: PropTypes.func.isRequired,
+	performOperation: PropTypes.func.isRequired,
+};
 
 export default SelectionOperation;

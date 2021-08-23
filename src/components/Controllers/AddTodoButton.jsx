@@ -1,4 +1,6 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+
 import { Button } from 'reactstrap';
 
 function AddTodoButton({ openAddTodo }) {
@@ -21,5 +23,11 @@ function AddTodoButton({ openAddTodo }) {
 		</>
 	);
 }
+
+AddTodoButton.propTypes = {
+	openAddTodo: PropTypes.shape({
+		toggle: PropTypes.func.isRequired,
+	}),
+};
 
 export default AddTodoButton;

@@ -7,6 +7,7 @@ import SearchPanel from './SearchPanel';
 import FilterStatus from './FilterStatus';
 import FilterDate from './FilterDate';
 import Sort from './Sort';
+import ClearSearchFilterSort from './ClearSearchFilterSort';
 import ChangeView from './ChangeView';
 import SelectionOperation from './SelectionOperation';
 import Export from './Export';
@@ -18,6 +19,7 @@ function Controllers({ controllers }) {
 		filterStatus,
 		filterDate,
 		sort,
+		clearSearchFilterSort,
 		dataView,
 		selection,
 		exportFiles,
@@ -42,7 +44,11 @@ function Controllers({ controllers }) {
 						value={filterDate.value}
 						setValue={filterDate.changeFilterDate}
 					/>{' '}
-					<Sort value={sort.value} toggleSort={sort.toggleSort} />
+					<Sort value={sort.value} toggleSort={sort.toggleSort} />{' '}
+					<ClearSearchFilterSort
+						stateValues={clearSearchFilterSort.stateValues}
+						action={clearSearchFilterSort.action}
+					/>
 				</Col>
 				<div className="clearfix d-block d-md-none mt-1"></div>
 				<Col className="text-md-center">
