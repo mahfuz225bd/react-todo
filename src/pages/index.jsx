@@ -336,10 +336,51 @@ class Home extends Component {
 					break;
 			}
 		}
+
+		// Refresh data at state
 		this.setState({ data: this.state.data });
 	}
 
-	performSelectionOperation() {}
+	performSelectionOperation(data, value) {
+		const operations = [
+			'startAll',
+			'completeAll',
+			'incompleteAll',
+			'deleteAll',
+		];
+
+		if (containsInArray(operations, value)) {
+			switch (value) {
+				case 'startAll':
+					data.forEach((each) => {
+						if (each.selected && !each.started) {
+							each.started = true;
+						}
+					});
+					break;
+				case 'completeAll':
+					data.forEach((each) => {
+						if (each.selected && each.started && !each.completed) {
+							each.completed = true;
+						}
+					});
+					break;
+				case 'incompleteAll':
+					data.forEach((each) => {
+						if (each.selected && each.started && each.completed) {
+							each.started = false;
+							each.completed = false;
+						}
+					});
+					break;
+				default:
+					break;
+			}
+		}
+
+		// Refresh data at state
+		this.setState({ data: this.state.data });
+	}
 
 	render() {
 		const {
@@ -399,7 +440,7 @@ class Home extends Component {
 							performSelectionOperation: this.performSelectionOperation,
 						},
 						exportFiles: {
-							data: newData,
+							data: this.state.data,
 						},
 						openAddTodo: {
 							isOpen: openAddTodo,

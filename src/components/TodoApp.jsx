@@ -104,10 +104,6 @@ TodoApp.propTypes = {
 		onSubmit: PropTypes.func.isRequired,
 	}).isRequired,
 	controllers: PropTypes.object.isRequired,
-	openAddTodo: PropTypes.shape({
-		isOpen: PropTypes.bool.isRequired,
-		toggle: PropTypes.func.isRequired,
-	}).isRequired,
 	onSelect: PropTypes.func.isRequired,
 	onChangeStatus: PropTypes.func.isRequired,
 };

@@ -13,7 +13,7 @@ function SelectionOperation({
 	data,
 	filterStatusValue,
 	performMultiSelection,
-	performOperation,
+	performSelectionOperation,
 }) {
 	const [selectOptionsOpen, setSelectOptionsOpen] = useState(false);
 	const toggleSelectOptions = () => setSelectOptionsOpen(!selectOptionsOpen);
@@ -96,6 +96,7 @@ function SelectionOperation({
 					</DropdownToggle>
 					<DropdownMenu>
 						<DropdownItem
+							onClick={() => performSelectionOperation(data, 'startAll')}
 							// If any selected item, ready to start
 							disabled={
 								!data.some(
@@ -106,6 +107,7 @@ function SelectionOperation({
 							Start
 						</DropdownItem>
 						<DropdownItem
+							onClick={() => performSelectionOperation(data, 'completeAll')}
 							// If any selected item, ready to complete
 							disabled={
 								!data.some(
@@ -119,6 +121,7 @@ function SelectionOperation({
 							Complete
 						</DropdownItem>
 						<DropdownItem
+							onClick={() => performSelectionOperation(data, 'incompleteAll')}
 							// If any selected item, ready to incomplete
 							disabled={
 								!data.some(
@@ -146,7 +149,7 @@ SelectionOperation.propTypes = {
 	data: PropTypes.arrayOf(PropTypes.object).isRequired,
 	filterStatusValue: PropTypes.string.isRequired,
 	performMultiSelection: PropTypes.func.isRequired,
-	performOperation: PropTypes.func.isRequired,
+	performSelectionOperation: PropTypes.func.isRequired,
 };
 
 export default SelectionOperation;

@@ -63,6 +63,7 @@ function Controllers({ controllers }) {
 						data={selection.data}
 						filterStatusValue={selection.filterStatusValue}
 						performMultiSelection={selection.performMultiSelection}
+						performSelectionOperation={selection.performSelectionOperation}
 					/>{' '}
 					<Export data={exportFiles.data} />{' '}
 					<AddTodoButton openAddTodo={openAddTodo} />
