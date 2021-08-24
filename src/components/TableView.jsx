@@ -1,38 +1,42 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { Table, CustomInput, Button } from 'reactstrap';
+import { Table, CustomInput, ButtonGroup, Button } from 'reactstrap';
 
 function TableView({ todos, onSelect, onChangeStatus }) {
 	return (
 		<div>
 			{todos.length ? (
-				<Table striped bordered hover size="sm">
+				<Table size="sm" striped bordered hover>
+					<colgroup>
+						<col style={{ width: '42px' }} />
+						<col />
+						<col style={{ width: '205px', minWidth: '205px' }} />
+						<col style={{ width: '105px' }} />
+						<col style={{ width: '210px' }} />
+					</colgroup>
 					<thead>
 						<tr>
 							<th>#</th>
 							<th>Todo</th>
 							<th>Created Date</th>
 							<th>Status</th>
+							<th>Action</th>
 						</tr>
 					</thead>
 					<tbody>
 						{todos.map((todo, index) => (
-							<tr
-								key={index}
-								className={`${todo.selected && 'bg-dark bg-opacity-10'}`}
-							>
+							<tr key={index} className={`${todo.selected && 'table-active'}`}>
 								<td>
 									<CustomInput
 										id="chkSelect"
 										type="checkbox"
-										className="ps-1"
+										className="text-center"
 										style={{
 											transform: 'scale(2)',
 											width: '25px',
 											textAlign: 'center',
 											verticalAlign: 'middle',
-											borderRadius: '0px',
 										}}
 										data-tip="Select todo"
 										data-place="right"
@@ -46,9 +50,11 @@ function TableView({ todos, onSelect, onChangeStatus }) {
 									{todo.started && !todo.completed ? (
 										<Button
 											color="success"
-											className="rounded-0 w-100"
+											className="rounded-0"
+											style={{ width: '105px' }}
 											data-tip="Incomplete, click to mark as complete"
 											data-place="left"
+											size="sm"
 											onClick={() => onChangeStatus(todo.id, 'complete')}
 										>
 											Running
@@ -56,9 +62,11 @@ function TableView({ todos, onSelect, onChangeStatus }) {
 									) : todo.started && todo.completed ? (
 										<Button
 											color="danger"
-											className="rounded-0 w-100"
+											className="rounded-0"
+											style={{ width: '105px' }}
 											data-tip="Completed, click to mark as incomplete"
 											data-place="left"
+											size="sm"
 											onClick={() => onChangeStatus(todo.id, 'incomplete')}
 										>
 											Completed
@@ -66,14 +74,32 @@ function TableView({ todos, onSelect, onChangeStatus }) {
 									) : (
 										<Button
 											color="primary"
-											className="rounded-0 w-100"
+											className="rounded-0"
+											style={{ width: '105px' }}
 											data-tip="Start task"
 											data-place="left"
+											size="sm"
 											onClick={() => onChangeStatus(todo.id, 'start')}
 										>
 											Start
 										</Button>
 									)}
+								</td>
+								<td>
+									<ButtonGroup className="align-self-center" size="sm">
+										<Button color="primary" className="rounded-0">
+											<i class="fas fa-search" aria-hidden="true"></i>{' '}
+											<span className="d-none d-md-inline">View</span>
+										</Button>
+										<Button color="secondary" className="rounded-0">
+											<i class="fas fa-edit" aria-hidden="true"></i>{' '}
+											<span className="d-none d-md-inline">Edit</span>
+										</Button>
+										<Button color="danger" className="rounded-0">
+											<i class="fas fa-minus-circle" aria-hidden="true"></i>{' '}
+											<span className="d-none d-md-inline">Delete</span>
+										</Button>
+									</ButtonGroup>
 								</td>
 							</tr>
 						))}

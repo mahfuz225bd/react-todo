@@ -14,12 +14,11 @@ function ClearSearchFilterSort({ stateValues, action, disabled }) {
 	return (
 		<>
 			<Button
-				color="primary"
+				color="warning"
 				onClick={action}
 				hidden={JSON.stringify(stateValues) === target}
 				data-tip="Clear Search/Filter/Sort"
 				size="sm"
-				outline
 				disabled={disabled}
 			>
 				Clear

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 import {
 	Button,
+	ButtonGroup,
 	CustomInput,
 	ListGroup,
 	ListGroupItem,
@@ -39,7 +40,7 @@ function ListView({ todos, onSelect, onChangeStatus }) {
 									{todo.datetime}
 								</ListGroupItemText>
 							</div>
-							<div className="ms-auto align-self-center">
+							<div className="ms-auto pe-1 align-self-center">
 								{todo.started && !todo.completed ? (
 									<Button
 										color="success"
@@ -72,6 +73,17 @@ function ListView({ todos, onSelect, onChangeStatus }) {
 									</Button>
 								)}
 							</div>
+							<ButtonGroup className="align-self-center">
+								<Button color="primary" className="rounded-0">
+									<i class="fas fa-search" aria-hidden="true"></i> <span className="d-none d-md-inline">View</span>
+								</Button>
+								<Button color="secondary" className="rounded-0">
+									<i class="fas fa-edit" aria-hidden="true"></i> <span className="d-none d-md-inline">Edit</span>
+								</Button>
+								<Button color="danger" className="rounded-0">
+									<i class="fas fa-minus-circle" aria-hidden="true"></i> <span className="d-none d-md-inline">Delete</span>
+								</Button>
+							</ButtonGroup>
 						</ListGroupItem>
 					))}
 				</ListGroup>

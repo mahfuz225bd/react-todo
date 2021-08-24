@@ -1,8 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { Container, Row, Col } from 'reactstrap';
-
 import SearchPanel from './SearchPanel';
 import FilterStatus from './FilterStatus';
 import FilterDate from './FilterDate';
