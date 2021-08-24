@@ -27,17 +27,14 @@ function Controllers({ controllers }) {
 		disabled,
 	} = controllers;
 	return (
-		<Container>
-			<Row>
-				<Col>
-					<SearchPanel
-						searchValue={search.value}
-						onChangeSearchValue={search.onChangeSearchValue}
-						disabled={disabled}
-					/>
-				</Col>
-				<div className="clearfix mt-2"></div>
-				<Col>
+		<div>
+			<SearchPanel
+				searchValue={search.value}
+				onChangeSearchValue={search.onChangeSearchValue}
+				disabled={disabled}
+			/>
+			<div className="d-flex justify-content-between flex-wrap mt-1">
+				<div className="mb-1">
 					<FilterStatus
 						value={filterStatus.value}
 						setValue={filterStatus.changeFilter}
@@ -58,17 +55,15 @@ function Controllers({ controllers }) {
 						action={clearSearchFilterSort.action}
 						disabled={disabled}
 					/>
-				</Col>
-				<div className="clearfix d-block d-md-none mt-1"></div>
-				<Col className="text-md-center">
+				</div>
+				<div className="mb-1">
 					<ChangeView
 						currView={dataView.currView}
 						changeView={dataView.changeView}
 						disabled={disabled}
 					/>
-				</Col>
-				<div className="clearfix d-block d-md-none mt-1"></div>
-				<Col className="text-md-end">
+				</div>
+				<div className="mb-1">
 					<SelectionOperation
 						data={selection.data}
 						filterStatusValue={selection.filterStatusValue}
@@ -77,9 +72,9 @@ function Controllers({ controllers }) {
 					/>{' '}
 					<Export data={exportFiles.data} />{' '}
 					<AddTodoButton openAddTodo={openAddTodo} />
-				</Col>
-			</Row>
-		</Container>
+				</div>
+			</div>
+		</div>
 	);
 }
 

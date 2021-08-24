@@ -36,7 +36,7 @@ const TodoApp = ({ data, newTodo, controllers, onSelect, onChangeStatus }) => {
 					<h2 className="display-4 text-center">React Todo App</h2>
 				</Row>
 				{/* Controllers */}
-				<Row className="mb-2">
+				<Row className="mb-1">
 					<Controllers
 						controllers={controllers}
 						disabled={controllers.disabled}
