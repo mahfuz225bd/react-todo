@@ -9,7 +9,7 @@ import {
 	Button,
 } from 'reactstrap';
 
-function FilterDate({ value, setValue }) {
+function FilterDate({ value, setValue, disabled }) {
 	const [filterDateOpen, setFilterDateOpen] = useState(false);
 	const togglefilterDate = () => setFilterDateOpen(!filterDateOpen);
 
@@ -24,6 +24,7 @@ function FilterDate({ value, setValue }) {
 					active={value === 'all'}
 					onClick={() => setValue('all')}
 					outline
+					disabled={disabled}
 				>
 					All
 				</Button>
@@ -33,6 +34,7 @@ function FilterDate({ value, setValue }) {
 					size="sm"
 					data-tip="Filter by Date"
 					outline
+					disabled={disabled}
 				/>
 				<DropdownMenu>
 					<DropdownItem

@@ -37,7 +37,10 @@ const TodoApp = ({ data, newTodo, controllers, onSelect, onChangeStatus }) => {
 				</Row>
 				{/* Controllers */}
 				<Row className="mb-2">
-					<Controllers controllers={controllers} />
+					<Controllers
+						controllers={controllers}
+						disabled={controllers.disabled}
+					/>
 				</Row>
 				{/* Data View */}
 				<Row>
@@ -104,6 +107,7 @@ TodoApp.propTypes = {
 		onSubmit: PropTypes.func.isRequired,
 	}).isRequired,
 	controllers: PropTypes.object.isRequired,
+	disabled: PropTypes.bool.isRequired,
 	onSelect: PropTypes.func.isRequired,
 	onChangeStatus: PropTypes.func.isRequired,
 };

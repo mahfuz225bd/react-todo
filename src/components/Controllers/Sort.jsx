@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import { Button } from 'reactstrap';
 
-function Sort({ value, toggleSort }) {
+function Sort({ value, toggleSort, disabled }) {
 	return (
 		<>
 			{value === 'latest' ? (
@@ -13,6 +13,7 @@ function Sort({ value, toggleSort }) {
 					data-tip="Sort: Oldest"
 					onClick={() => toggleSort('oldest')}
 					outline
+					disabled={disabled}
 				>
 					<i className="fas fa-sort" aria-hidden="true"></i> Oldest
 				</Button>
@@ -23,6 +24,7 @@ function Sort({ value, toggleSort }) {
 					data-tip="Sort: Latest"
 					onClick={() => toggleSort('latest')}
 					outline
+					disabled={disabled}
 				>
 					<i className="fas fa-sort" aria-hidden="true"></i> Latest
 				</Button>

@@ -2,34 +2,11 @@ import React, { Component } from 'react';
 
 import ReactTooltip from 'react-tooltip';
 
-import formattedDateTime from '../assets/js/formattedDateTime';
+import getData from '../assets/js/getLocalStorageData';
 import containsInArray from '../assets/js/error.ContainsInArray';
+import formattedDateTime from '../assets/js/formattedDateTime';
 
 import TodoApp from '../components/TodoApp';
-
-// Setting up currID and data, if not found
-if (!localStorage.currID && !localStorage.data) {
-	localStorage.setItem('data', '[]');
-
-	const getData = JSON.parse(localStorage.getItem('data'));
-	localStorage.setItem('currID', getData[getData.length - 1] || 1);
-}
-
-const getData = () => {
-	const getLocalStorageData = JSON.parse(localStorage.getItem('data'));
-
-	const result = [];
-
-	// Appending each data from localStorage to result array with `selected: false`
-	getLocalStorageData.forEach((each) => {
-		result.push({
-			selected: false,
-			...each,
-		});
-	});
-
-	return result;
-};
 
 const initNewTodo = {
 	title: '',
@@ -439,6 +416,7 @@ class Home extends Component {
 						onSubmit: this.handleSubmit,
 					}}
 					controllers={{
+						disabled: this.state.data.length === 0,
 						search: {
 							value: searchValue,
 							onChangeSearchValue: this.handleSearch,

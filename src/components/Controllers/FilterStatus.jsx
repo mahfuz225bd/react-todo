@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import { ButtonGroup, Button } from 'reactstrap';
 
-function FilterStatus({ value, setValue }) {
+function FilterStatus({ value, setValue, disabled }) {
 	return (
 		<>
 			<ButtonGroup className="d-inline" size="sm">
@@ -13,6 +13,7 @@ function FilterStatus({ value, setValue }) {
 					active={value === 'all'}
 					onClick={() => setValue('all')}
 					outline
+					disabled={disabled}
 				>
 					All
 				</Button>
@@ -22,6 +23,7 @@ function FilterStatus({ value, setValue }) {
 					active={value === 'pending'}
 					onClick={() => setValue('pending')}
 					outline
+					disabled={disabled}
 				>
 					Pending
 				</Button>
@@ -31,6 +33,7 @@ function FilterStatus({ value, setValue }) {
 					active={value === 'running'}
 					onClick={() => setValue('running')}
 					outline
+					disabled={disabled}
 				>
 					Running
 				</Button>
@@ -40,6 +43,7 @@ function FilterStatus({ value, setValue }) {
 					active={value === 'completed'}
 					onClick={() => setValue('completed')}
 					outline
+					disabled={disabled}
 				>
 					Completed
 				</Button>

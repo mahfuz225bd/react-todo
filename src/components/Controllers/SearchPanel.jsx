@@ -10,7 +10,7 @@ import {
 	DropdownItem,
 } from 'reactstrap';
 
-function SearchPanel({ searchValue, onChangeSearchValue }) {
+function SearchPanel({ searchValue, onChangeSearchValue, disabled }) {
 	const [advSearchDropdownOpen, setAdvSearchDropdownOpen] = useState(false);
 	const toggleAdvSearchDropdown = () =>
 		setAdvSearchDropdownOpen(!advSearchDropdownOpen);
@@ -23,6 +23,7 @@ function SearchPanel({ searchValue, onChangeSearchValue }) {
 					placeholder="Search todo..."
 					value={searchValue}
 					onChange={onChangeSearchValue}
+					disabled={disabled}
 				/>
 				<InputGroupButtonDropdown
 					addonType="append"
@@ -34,9 +35,10 @@ function SearchPanel({ searchValue, onChangeSearchValue }) {
 						data-tip="Advanced search options"
 						outline
 						caret
+						disabled={disabled}
 					>
-						<i className="fa fa-search-plus" aria-hidden="true"></i>{' '}
-						<span>Advanced Search</span>
+						<i className="fa fa-search-plus" aria-hidden="true"></i> Advanced
+						Search
 					</DropdownToggle>
 					<DropdownMenu>
 						<DropdownItem>by All Fields</DropdownItem>

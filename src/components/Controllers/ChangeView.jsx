@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import { ButtonGroup, Button } from 'reactstrap';
 
-function ChangeView({ currView, changeView }) {
+function ChangeView({ currView, changeView, disabled }) {
 	return (
 		<>
 			<ButtonGroup size="sm">
@@ -13,6 +13,7 @@ function ChangeView({ currView, changeView }) {
 					onClick={() => changeView('list')}
 					active={currView === 'list'}
 					outline
+					disabled={disabled}
 				>
 					<i className="fas fa-list" aria-hidden="true"></i> List
 				</Button>
@@ -22,6 +23,7 @@ function ChangeView({ currView, changeView }) {
 					onClick={() => changeView('table')}
 					active={currView === 'table'}
 					outline
+					disabled={disabled}
 				>
 					<i className="fas fa-table" aria-hidden="true"></i> Table
 				</Button>

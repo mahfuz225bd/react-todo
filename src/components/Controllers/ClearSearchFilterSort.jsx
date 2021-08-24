@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import { Button } from 'reactstrap';
 
-function ClearSearchFilterSort({ stateValues, action }) {
+function ClearSearchFilterSort({ stateValues, action, disabled }) {
 	const target = JSON.stringify({
 		searchValue: '',
 		filterStatus: 'all',
@@ -20,6 +20,7 @@ function ClearSearchFilterSort({ stateValues, action }) {
 				data-tip="Clear Search/Filter/Sort"
 				size="sm"
 				outline
+				disabled={disabled}
 			>
 				Clear
 			</Button>

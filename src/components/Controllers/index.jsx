@@ -24,6 +24,7 @@ function Controllers({ controllers }) {
 		selection,
 		exportFiles,
 		openAddTodo,
+		disabled,
 	} = controllers;
 	return (
 		<Container>
@@ -32,6 +33,7 @@ function Controllers({ controllers }) {
 					<SearchPanel
 						searchValue={search.value}
 						onChangeSearchValue={search.onChangeSearchValue}
+						disabled={disabled}
 					/>
 				</Col>
 				<div className="clearfix mt-2"></div>
@@ -39,15 +41,22 @@ function Controllers({ controllers }) {
 					<FilterStatus
 						value={filterStatus.value}
 						setValue={filterStatus.changeFilter}
+						disabled={disabled}
 					/>{' '}
 					<FilterDate
 						value={filterDate.value}
 						setValue={filterDate.changeFilterDate}
+						disabled={disabled}
 					/>{' '}
-					<Sort value={sort.value} toggleSort={sort.toggleSort} />{' '}
+					<Sort
+						value={sort.value}
+						toggleSort={sort.toggleSort}
+						disabled={disabled}
+					/>{' '}
 					<ClearSearchFilterSort
 						stateValues={clearSearchFilterSort.stateValues}
 						action={clearSearchFilterSort.action}
+						disabled={disabled}
 					/>
 				</Col>
 				<div className="clearfix d-block d-md-none mt-1"></div>
@@ -55,6 +64,7 @@ function Controllers({ controllers }) {
 					<ChangeView
 						currView={dataView.currView}
 						changeView={dataView.changeView}
+						disabled={disabled}
 					/>
 				</Col>
 				<div className="clearfix d-block d-md-none mt-1"></div>
@@ -75,6 +85,7 @@ function Controllers({ controllers }) {
 
 Controllers.propTypes = {
 	controllers: PropTypes.object.isRequired,
+	disabled: PropTypes.bool.isRequired,
 };
 
 export default Controllers;
