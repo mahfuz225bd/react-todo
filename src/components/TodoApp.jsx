@@ -1,14 +1,21 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { Container, Col, Row, Button } from 'reactstrap';
+import { Container, Col, Row, Button, Table } from 'reactstrap';
 import Controllers from './Controllers';
 import ListView from './ListView';
 import TableView from './TableView';
 import CustomModal from './CustomModal';
 import AddTodoForm from './AddTodoForm';
 
-const TodoApp = ({ data, newTodo, controllers, onSelect, onChangeStatus }) => {
+const TodoApp = ({
+	data,
+	newTodo,
+	controllers,
+	onSelect,
+	onChangeStatus,
+	viewTodo,
+}) => {
 	const submitAddTodoForm = () => {
 		document.querySelector('#addTodo button[type=submit]').click();
 	};
@@ -25,6 +32,7 @@ const TodoApp = ({ data, newTodo, controllers, onSelect, onChangeStatus }) => {
 				todos={data}
 				onSelect={onSelect}
 				onChangeStatus={onChangeStatus}
+				viewTodo={viewTodo}
 			/>
 		);
 	};
@@ -46,55 +54,113 @@ const TodoApp = ({ data, newTodo, controllers, onSelect, onChangeStatus }) => {
 				<Row>
 					<Col>{getView()}</Col>
 				</Row>
-				{/* Modal: AddTodoForm */}
-				<CustomModal
-					id="addTodoModal"
-					icon={
-						<>
-							<i className="fas fa-plus-square" aria-hidden="true"></i>
-						</>
-					}
-					title="Add New Todo"
-					isOpen={controllers.openAddTodo.isOpen}
-					onToggle={controllers.openAddTodo.toggle}
-					footerContent={
-						<>
-							<Button
-								color="primary"
-								data-tip="Add (Ctrl + enter)"
-								onClick={() => {
-									submitAddTodoForm();
-									// After submitting, toggle to close addTodoModal
-									if (
-										document.querySelector('#addTodo #title[required]').value
-									) {
-										controllers.openAddTodo.toggle();
-									}
-								}}
-							>
-								<i className="fas fa-plus" aria-hidden="true"></i> Add
-							</Button>
-							<Button
-								color="primary"
-								onClick={() => {
-									submitAddTodoForm();
-									// Focus for the next form input
-									document.querySelector('#addTodo #title').focus();
-								}}
-							>
-								<i className="fas fa-asterisk" aria-hidden="true"></i> Save{' '}
-								{'&'} New
-							</Button>
-						</>
-					}
-				>
-					<AddTodoForm
-						newTodoObj={newTodo.newTodoObj}
-						onChangeInput={newTodo.onChangeInput}
-						onSubmit={newTodo.onSubmit}
-					/>
-				</CustomModal>
 			</Container>
+
+			{/* Modal: AddTodoForm */}
+			<CustomModal
+				icon={
+					<>
+						<i className="fas fa-plus-square" aria-hidden="true"></i>
+					</>
+				}
+				title="Add New Todo"
+				isOpen={controllers.openAddTodo.isOpen}
+				onToggle={controllers.openAddTodo.toggle}
+				footerContent={
+					<>
+						<Button
+							color="primary"
+							data-tip="Add (Ctrl + enter)"
+							onClick={() => {
+								submitAddTodoForm();
+								// After submitting, toggle to close addTodoModal
+								if (document.querySelector('#addTodo #title[required]').value) {
+									controllers.openAddTodo.toggle();
+								}
+							}}
+						>
+							<i className="fas fa-plus" aria-hidden="true"></i> Add
+						</Button>
+						<Button
+							color="primary"
+							onClick={() => {
+								submitAddTodoForm();
+								// Focus for the next form input
+								document.querySelector('#addTodo #title').focus();
+							}}
+						>
+							<i className="fas fa-asterisk" aria-hidden="true"></i> Save {'&'}{' '}
+							New
+						</Button>
+					</>
+				}
+			>
+				<AddTodoForm
+					newTodoObj={newTodo.newTodoObj}
+					onChangeInput={newTodo.onChangeInput}
+					onSubmit={newTodo.onSubmit}
+				/>
+			</CustomModal>
+			<CustomModal
+				icon={
+					<>
+						<i className="fas fa-search" aria-hidden="true"></i>
+					</>
+				}
+				title="View Todo"
+				isOpen={viewTodo.modal.isOpen}
+				onToggle={viewTodo.modal.toggle}
+				footerContent={
+					<>
+						<Button
+							color="primary"
+							data-tip="OK (Enter)"
+							onClick={() => {
+								viewTodo.modal.toggle();
+							}}
+						>
+							OK
+						</Button>
+					</>
+				}
+			>
+				<Table>
+					<colgroup>
+						<col width="110" />
+						<col />
+					</colgroup>
+					<tr>
+						<th>ID#</th>
+						<td>{viewTodo.viewTodoObj.id}</td>
+					</tr>
+					<tr>
+						<th>Title</th>
+						<td>{viewTodo.viewTodoObj.title}</td>
+					</tr>
+					<tr>
+						<th>Date/Time</th>
+						<td>{viewTodo.viewTodoObj.datetime}</td>
+					</tr>
+					<tr>
+						<th>Description</th>
+						<td>{viewTodo.viewTodoObj.description}</td>
+					</tr>
+					<tr>
+						<th>Status</th>
+						<td
+							className={`${
+								viewTodo.viewTodoObj.status === 'Running'
+									? 'text-success'
+									: viewTodo.viewTodoObj.status === 'Completed'
+									? 'text-danger'
+									: ''
+							} fw-bold`}
+						>
+							{viewTodo.viewTodoObj.status}
+						</td>
+					</tr>
+				</Table>
+			</CustomModal>
 		</>
 	);
 };

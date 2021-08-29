@@ -11,7 +11,7 @@ import {
 	ListGroupItemText,
 } from 'reactstrap';
 
-function ListView({ todos, onSelect, onChangeStatus }) {
+function ListView({ todos, onSelect, onChangeStatus, viewTodo }) {
 	return (
 		<div>
 			{todos.length ? (
@@ -74,14 +74,24 @@ function ListView({ todos, onSelect, onChangeStatus }) {
 								)}
 							</div>
 							<ButtonGroup className="align-self-center">
-								<Button color="primary" className="rounded-0">
-									<i class="fas fa-search" aria-hidden="true"></i> <span className="d-none d-md-inline">View</span>
+								<Button
+									color="primary"
+									className="rounded-0"
+									onClick={() => {
+										viewTodo.setViewTodo(todo.id);
+										viewTodo.modal.toggle();
+									}}
+								>
+									<i class="fas fa-search" aria-hidden="true"></i>{' '}
+									<span className="d-none d-md-inline">View</span>
 								</Button>
 								<Button color="secondary" className="rounded-0">
-									<i class="fas fa-edit" aria-hidden="true"></i> <span className="d-none d-md-inline">Edit</span>
+									<i class="fas fa-edit" aria-hidden="true"></i>{' '}
+									<span className="d-none d-md-inline">Edit</span>
 								</Button>
 								<Button color="danger" className="rounded-0">
-									<i class="fas fa-minus-circle" aria-hidden="true"></i> <span className="d-none d-md-inline">Delete</span>
+									<i class="fas fa-minus-circle" aria-hidden="true"></i>{' '}
+									<span className="d-none d-md-inline">Delete</span>
 								</Button>
 							</ButtonGroup>
 						</ListGroupItem>
@@ -95,6 +105,8 @@ function ListView({ todos, onSelect, onChangeStatus }) {
 }
 
 ListView.propTypes = {
+	onChangeStatus: PropTypes.func.isRequired,
+	onSelect: PropTypes.func.isRequired,
 	todos: PropTypes.arrayOf(
 		PropTypes.shape({
 			selected: PropTypes.bool.isRequired,
@@ -106,8 +118,12 @@ ListView.propTypes = {
 			completed: PropTypes.bool.isRequired,
 		})
 	).isRequired,
-	onSelect: PropTypes.func.isRequired,
-	onChangeStatus: PropTypes.func.isRequired,
+	viewTodo: PropTypes.shape({
+		modal: PropTypes.shape({
+			toggle: PropTypes.func.isRequired,
+		}),
+		setViewTodo: PropTypes.func.isRequired,
+	}).isRequired,
 };
 
 export default ListView;

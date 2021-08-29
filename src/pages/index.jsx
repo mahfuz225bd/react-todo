@@ -20,6 +20,9 @@ class Home extends Component {
 		this.state = {
 			data: getData(),
 			newTodo: initNewTodo,
+			viewTodo: {},
+			editTodo: {},
+			deleteTodo: {},
 
 			searchValue: '',
 			filterStatus: 'all',
@@ -28,11 +31,16 @@ class Home extends Component {
 
 			currView: 'list',
 
-			openAddTodo: false,
+			openAddTodoModal: false,
+			openViewTodoModal: false,
 		};
 
 		this.handleChange = this.handleChange.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
+
+		this.handleSelect = this.handleSelect.bind(this);
+		this.handleStatus = this.handleStatus.bind(this);
+		this.setViewTodo = this.setViewTodo.bind(this);
 
 		this.handleSearch = this.handleSearch.bind(this);
 		this.handleFilterStatus = this.handleFilterStatus.bind(this);
@@ -42,10 +50,8 @@ class Home extends Component {
 		this.handleChangeView = this.handleChangeView.bind(this);
 		this.performMultiSelection = this.performMultiSelection.bind(this);
 		this.performSelectionOperation = this.performSelectionOperation.bind(this);
-		this.toggleAddTodoModal = this.toggleAddTodoModal.bind(this);
 
-		this.handleSelect = this.handleSelect.bind(this);
-		this.handleStatus = this.handleStatus.bind(this);
+		this.toggleModal = this.toggleModal.bind(this);
 	}
 
 	handleChange(event) {
@@ -151,6 +157,29 @@ class Home extends Component {
 		}
 	}
 
+	setViewTodo(targetId) {
+		const filteredById = JSON.parse(localStorage.getItem('data')).filter(
+			(each) => each.id === targetId
+		)[0];
+
+		const taskStatus =
+			filteredById.started && !filteredById.completed
+				? 'Running'
+				: filteredById.started && filteredById.completed
+				? 'Completed'
+				: 'Not started';
+
+		this.setState({
+			viewTodo: {
+				id: filteredById.id,
+				title: filteredById.title,
+				datetime: filteredById.datetime,
+				description: filteredById.description,
+				status: taskStatus,
+			},
+		});
+	}
+
 	handleSearch(event) {
 		this.setState({
 			searchValue: event.target.value,
@@ -212,11 +241,34 @@ class Home extends Component {
 		}
 	}
 
-	toggleAddTodoModal() {
-		this.setState({
-			openAddTodo: !this.state.openAddTodo,
-			newTodo: initNewTodo,
-		});
+	toggleModal(targetModal) {
+		const modals = ['addTodo', 'viewTodo', 'editTodo', 'deleteTodo'];
+		if (containsInArray(modals, targetModal)) {
+			switch (targetModal) {
+				case 'addTodo':
+					this.setState({
+						openAddTodoModal: !this.state.openAddTodoModal,
+						newTodo: initNewTodo,
+					});
+					break;
+
+				case 'viewTodo':
+					this.setState({
+						openViewTodoModal: !this.state.openViewTodoModal,
+					});
+
+					//By closing, init viewTodo
+					if (this.state.openViewTodoModal) {
+						this.setState({
+							viewTodo: {},
+						});
+					}
+					break;
+
+				default:
+					break;
+			}
+		}
 	}
 
 	performSearch(searchValue) {
@@ -397,7 +449,9 @@ class Home extends Component {
 			filterDate,
 			sort,
 			currView,
-			openAddTodo,
+			openAddTodoModal,
+			viewTodo,
+			openViewTodoModal,
 		} = this.state;
 
 		let newData = this.performSearch(searchValue);
@@ -451,12 +505,20 @@ class Home extends Component {
 							data: this.state.data,
 						},
 						openAddTodo: {
-							isOpen: openAddTodo,
-							toggle: this.toggleAddTodoModal,
+							isOpen: openAddTodoModal,
+							toggle: () => this.toggleModal('addTodo'),
 						},
 					}}
 					onSelect={this.handleSelect}
 					onChangeStatus={this.handleStatus}
+					viewTodo={{
+						viewTodoObj: viewTodo,
+						setViewTodo: this.setViewTodo,
+						modal: {
+							isOpen: openViewTodoModal,
+							toggle: () => this.toggleModal('viewTodo'),
+						},
+					}}
 				/>
 				<ReactTooltip />
 			</div>
