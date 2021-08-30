@@ -114,7 +114,7 @@ const TodoApp = ({
 				<AddTodoForm
 					newTodoObj={newTodo.newTodoObj}
 					onChangeInput={newTodo.onChangeInput}
-					onSubmit={newTodo.onSubmit}
+					onSubmit={newTodo.add}
 				/>
 			</CustomModal>
 			{/* Modal: ViewTodo */}

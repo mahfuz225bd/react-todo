@@ -47,7 +47,7 @@ class Home extends Component {
 		};
 
 		this.handleChange = this.handleChange.bind(this);
-		this.handleSubmit = this.handleSubmit.bind(this);
+		this.addTodo = this.addTodo.bind(this);
 
 		this.handleSelect = this.handleSelect.bind(this);
 		this.handleStatus = this.handleStatus.bind(this);
@@ -97,7 +97,7 @@ class Home extends Component {
 		}
 	}
 
-	handleSubmit(event) {
+	addTodo(event) {
 		event.preventDefault();
 
 		const { title, description, started } = this.state.newTodo;
@@ -605,7 +605,7 @@ class Home extends Component {
 					newTodo={{
 						newTodoObj: newTodo,
 						onChangeInput: this.handleChange,
-						onSubmit: this.handleSubmit,
+						add: this.addTodo,
 					}}
 					controllers={{
 						disabled: this.state.data.length === 0,
