@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import formattedDateTime from '../assets/js/formattedDateTime';
+
 import {
 	Button,
 	ButtonGroup,
@@ -44,7 +46,7 @@ function ListView({
 							<div className="ms-3">
 								<ListGroupItemHeading>{todo.title}</ListGroupItemHeading>
 								<ListGroupItemText className="text-muted">
-									{todo.datetime}
+									{formattedDateTime(todo.datetime)}
 								</ListGroupItemText>
 							</div>
 							<div className="ms-auto pe-1 align-self-center">

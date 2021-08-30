@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 
 import { Table, CustomInput, ButtonGroup, Button } from 'reactstrap';
 
+import formattedDateTime from '../assets/js/formattedDateTime';
+
 function TableView({
 	todos,
 	onSelect,
@@ -52,7 +54,7 @@ function TableView({
 									/>
 								</td>
 								<td>{todo.title}</td>
-								<td>{todo.datetime}</td>
+								<td>{formattedDateTime(todo.datetime)}</td>
 								<td>
 									{todo.started && !todo.completed ? (
 										<Button

@@ -4,7 +4,6 @@ import ReactTooltip from 'react-tooltip';
 
 import getData from '../assets/js/getLocalStorageData';
 import containsInArray from '../assets/js/error.ContainsInArray';
-import formattedDateTime from '../assets/js/formattedDateTime';
 import getDateTimeValue from '../assets/js/getDateStringForHTMLInput';
 
 import TodoApp from '../components/TodoApp';
@@ -46,17 +45,25 @@ class Home extends Component {
 			openDeleteTodoModal: false,
 		};
 
-		this.handleChange = this.handleChange.bind(this);
-		this.addTodo = this.addTodo.bind(this);
-
+		// Handle selection data and task status
 		this.handleSelect = this.handleSelect.bind(this);
 		this.handleStatus = this.handleStatus.bind(this);
+
+		// Handle input text and checkbox
+		this.handleChange = this.handleChange.bind(this);
+
+		// Add
+		this.addTodo = this.addTodo.bind(this);
+		// View
 		this.setViewTodo = this.setViewTodo.bind(this);
+		// Edit and update
 		this.setEditTodo = this.setEditTodo.bind(this);
 		this.updateTodo = this.updateTodo.bind(this);
+		// Delete
 		this.setDeleteTodo = this.setDeleteTodo.bind(this);
 		this.deleteTodo = this.deleteTodo.bind(this);
 
+		// Controllers
 		this.handleSearch = this.handleSearch.bind(this);
 		this.handleFilterStatus = this.handleFilterStatus.bind(this);
 		this.handleFilterDate = this.handleFilterDate.bind(this);
@@ -66,6 +73,7 @@ class Home extends Component {
 		this.performMultiSelection = this.performMultiSelection.bind(this);
 		this.performSelectionOperation = this.performSelectionOperation.bind(this);
 
+		// Modals
 		this.toggleModal = this.toggleModal.bind(this);
 	}
 
@@ -108,7 +116,7 @@ class Home extends Component {
 		myLocalStorageData.push({
 			id: getID,
 			title: title,
-			datetime: formattedDateTime(),
+			datetime: getDateTimeValue(new Date()),
 			description: description,
 			started: started,
 			completed: false,
