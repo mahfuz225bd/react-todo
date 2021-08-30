@@ -16,7 +16,7 @@ const initNewTodo = {
 
 const initEditTodo = {
 	title: '',
-	datetime: getDateTimeValue(new Date()),
+	datetime: new Date().toLocaleString(),
 	description: '',
 	started: false,
 	completed: false,
@@ -116,7 +116,7 @@ class Home extends Component {
 		myLocalStorageData.push({
 			id: getID,
 			title: title,
-			datetime: getDateTimeValue(new Date()),
+			datetime: new Date().toISOString(),
 			description: description,
 			started: started,
 			completed: false,
@@ -234,10 +234,13 @@ class Home extends Component {
 		const { editTodo } = this.state;
 		const myLocalStorageData = JSON.parse(localStorage.getItem('data'));
 
+		const myDate = new Date(editTodo.datetime);
+		myDate.setMilliseconds(new Date().getMilliseconds());
+
 		myLocalStorageData.forEach((each) => {
 			if (editTodo.id === each.id) {
 				each.title = editTodo.title;
-				each.datetime = editTodo.datetime;
+				each.datetime = new Date(myDate).toISOString();
 				each.description = editTodo.description;
 				each.started = editTodo.started;
 				each.completed = editTodo.completed;
