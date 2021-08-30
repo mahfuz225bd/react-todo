@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import formattedDateTime from '../assets/js/formattedDateTime';
+
 import { Container, Col, Row, Button, Table, Form } from 'reactstrap';
 import Controllers from './Controllers';
 import ListView from './ListView';
@@ -157,7 +159,7 @@ const TodoApp = ({
 						</tr>
 						<tr>
 							<th>Date/Time</th>
-							<td>{viewTodo.viewTodoObj.datetime}</td>
+							<td>{formattedDateTime(viewTodo.viewTodoObj.datetime)}</td>
 						</tr>
 						<tr>
 							<th>Description</th>

@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 
-import ReactTooltip from 'react-tooltip';
-
 import getData from '../assets/js/getLocalStorageData';
 import containsInArray from '../assets/js/error.ContainsInArray';
-import getDateTimeValue from '../assets/js/getDateStringForHTMLInput';
+
+import ReactTooltip from 'react-tooltip';
 
 import TodoApp from '../components/TodoApp';
 
@@ -16,7 +15,7 @@ const initNewTodo = {
 
 const initEditTodo = {
 	title: '',
-	datetime: new Date().toLocaleString(),
+	datetime: new Date().toISOString(),
 	description: '',
 	started: false,
 	completed: false,
@@ -88,6 +87,18 @@ class Home extends Component {
 					editTodo: {
 						...this.state.editTodo,
 						[event.target.name]: event.target.checked,
+					},
+				});
+				break;
+			case 'datetime-local':
+				const myDate = new Date(event.target.value);
+				myDate.setSeconds(new Date().getSeconds());
+				myDate.setMilliseconds(new Date().getMilliseconds());
+
+				this.setState({
+					editTodo: {
+						...this.state.editTodo,
+						[event.target.name]: myDate.toISOString(),
 					},
 				});
 				break;
@@ -220,7 +231,7 @@ class Home extends Component {
 			editTodo: {
 				id: filteredById.id,
 				title: filteredById.title,
-				datetime: filteredById.datetime,
+				datetime: new Date(filteredById.datetime).toISOString(),
 				description: filteredById.description,
 				started: filteredById.started,
 				completed: filteredById.completed,
@@ -234,13 +245,10 @@ class Home extends Component {
 		const { editTodo } = this.state;
 		const myLocalStorageData = JSON.parse(localStorage.getItem('data'));
 
-		const myDate = new Date(editTodo.datetime);
-		myDate.setMilliseconds(new Date().getMilliseconds());
-
 		myLocalStorageData.forEach((each) => {
 			if (editTodo.id === each.id) {
 				each.title = editTodo.title;
-				each.datetime = new Date(myDate).toISOString();
+				each.datetime = editTodo.datetime;
 				each.description = editTodo.description;
 				each.started = editTodo.started;
 				each.completed = editTodo.completed;
