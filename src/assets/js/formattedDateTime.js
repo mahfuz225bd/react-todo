@@ -1,5 +1,5 @@
 import moment from 'moment';
 
-export default function formattedDateTime() {
-	return moment().format('ddd, MMM DD YYYY, h:mm A');
+export default function formattedDateTime(myDate) {
+	return moment(myDate).format('ddd, MMM D YYYY, h:mm A');
 }
