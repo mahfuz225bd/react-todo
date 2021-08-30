@@ -3,7 +3,14 @@ import PropTypes from 'prop-types';
 
 import { Table, CustomInput, ButtonGroup, Button } from 'reactstrap';
 
-function TableView({ todos, onSelect, onChangeStatus }) {
+function TableView({
+	todos,
+	onSelect,
+	onChangeStatus,
+	viewTodo,
+	editTodo,
+	deleteTodo,
+}) {
 	return (
 		<div>
 			{todos.length ? (
@@ -87,15 +94,36 @@ function TableView({ todos, onSelect, onChangeStatus }) {
 								</td>
 								<td>
 									<ButtonGroup className="align-self-center" size="sm">
-										<Button color="primary" className="rounded-0">
+										<Button
+											color="primary"
+											className="rounded-0"
+											onClick={() => {
+												viewTodo.setViewTodo(todo.id);
+												viewTodo.modal.toggle();
+											}}
+										>
 											<i className="fas fa-search" aria-hidden="true"></i>{' '}
 											<span className="d-none d-md-inline">View</span>
 										</Button>
-										<Button color="secondary" className="rounded-0">
+										<Button
+											color="secondary"
+											className="rounded-0"
+											onClick={() => {
+												editTodo.setEditTodo(todo.id);
+												editTodo.modal.toggle();
+											}}
+										>
 											<i className="fas fa-edit" aria-hidden="true"></i>{' '}
 											<span className="d-none d-md-inline">Edit</span>
 										</Button>
-										<Button color="danger" className="rounded-0">
+										<Button
+											color="danger"
+											className="rounded-0"
+											onClick={() => {
+												deleteTodo.setDeleteTodo(todo.id);
+												deleteTodo.modal.toggle();
+											}}
+										>
 											<i className="fas fa-minus-circle" aria-hidden="true"></i>{' '}
 											<span className="d-none d-md-inline">Delete</span>
 										</Button>
@@ -126,6 +154,24 @@ TableView.propTypes = {
 	).isRequired,
 	onSelect: PropTypes.func.isRequired,
 	onChangeStatus: PropTypes.func.isRequired,
+	viewTodo: PropTypes.shape({
+		modal: PropTypes.shape({
+			toggle: PropTypes.func.isRequired,
+		}),
+		setViewTodo: PropTypes.func.isRequired,
+	}).isRequired,
+	editTodo: PropTypes.shape({
+		modal: PropTypes.shape({
+			toggle: PropTypes.func.isRequired,
+		}),
+		setEditTodo: PropTypes.func.isRequired,
+	}).isRequired,
+	deleteTodo: PropTypes.shape({
+		modal: PropTypes.shape({
+			toggle: PropTypes.func.isRequired,
+		}),
+		setDeleteTodo: PropTypes.func.isRequired,
+	}).isRequired,
 };
 
 export default TableView;

@@ -37,6 +37,9 @@ const TodoApp = ({
 				todos={data}
 				onSelect={onSelect}
 				onChangeStatus={onChangeStatus}
+				viewTodo={viewTodo}
+				editTodo={editTodo}
+				deleteTodo={deleteTodo}
 			/>
 		) : (
 			<ListView
