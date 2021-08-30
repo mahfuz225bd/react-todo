@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 
-import getData from '../assets/js/getLocalStorageData';
-import containsInArray from '../assets/js/error.ContainsInArray';
+import moment from 'moment';
 
 import ReactTooltip from 'react-tooltip';
+
+import getData from '../assets/js/getLocalStorageData';
+import containsInArray from '../assets/js/error.ContainsInArray';
 
 import TodoApp from '../components/TodoApp';
 
@@ -361,7 +363,9 @@ class Home extends Component {
 			openEditTodoModal,
 			openDeleteTodoModal,
 		} = this.state;
+
 		const modals = ['addTodo', 'viewTodo', 'editTodo', 'deleteTodo'];
+
 		if (containsInArray(modals, targetModal)) {
 			switch (targetModal) {
 				case 'addTodo':
@@ -415,6 +419,7 @@ class Home extends Component {
 
 	performSearch(searchValue) {
 		const targetValue = searchValue.toLowerCase();
+
 		return this.state.data.filter((each) =>
 			each.title.toLowerCase().includes(targetValue)
 		);
@@ -428,14 +433,17 @@ class Home extends Component {
 				return data.filter(
 					(each) => each.started === false && each.completed === false
 				);
+
 			case 'running':
 				return data.filter(
 					(each) => each.started === true && each.completed === false
 				);
+
 			case 'completed':
 				return data.filter(
 					(each) => each.started === true && each.completed === true
 				);
+
 			default:
 				return data;
 		}
@@ -446,13 +454,38 @@ class Home extends Component {
 
 		switch (this.state.filterDate) {
 			case 'today':
-				return;
+				const today = new Date();
+
+				return data.filter(
+					(each) =>
+						new Date(each.datetime).toLocaleDateString() ===
+						today.toLocaleDateString()
+				);
+
 			case 'last7Days':
-				return;
+				const sevenDaysAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
+
+				return data.filter((each) =>
+					moment(each.datetime).isBetween(sevenDaysAgo, moment())
+				);
+
 			case 'last15Days':
-				return;
+				const fifteenDaysAgo = new Date(Date.now() - 15 * 24 * 60 * 60 * 1000);
+
+				return data.filter((each) =>
+					moment(each.datetime).isBetween(fifteenDaysAgo, moment())
+				);
+
 			case 'thisMonth':
-				return;
+				const thisMonth = new Date().getMonth();
+				const thisYear = new Date().getFullYear();
+
+				return data.filter(
+					(each) =>
+						new Date(each.datetime).getFullYear() === thisYear &&
+						new Date(each.datetime).getMonth() === thisMonth
+				);
+
 			default:
 				return data;
 		}
@@ -613,7 +646,7 @@ class Home extends Component {
 
 		let newData = this.performSearch(searchValue);
 		newData = this.performFilterStatus(newData);
-		// performFilterDate
+		newData = this.performFilterDate(newData);
 		newData = this.performSort(newData);
 
 		return (

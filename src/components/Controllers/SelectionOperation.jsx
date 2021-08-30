@@ -139,7 +139,7 @@ function SelectionOperation({
 							className="text-danger"
 							onClick={() => performSelectionOperation(data, 'deleteAll')}
 						>
-							<i className="fas fa-trash" aria-hidden="true"></i> Delete
+							<i className="fas fa-trash-alt" aria-hidden="true"></i> Delete All
 						</DropdownItem>
 					</DropdownMenu>
 				</ButtonDropdown>

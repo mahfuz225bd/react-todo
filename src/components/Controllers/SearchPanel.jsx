@@ -41,9 +41,14 @@ function SearchPanel({ searchValue, onChangeSearchValue, disabled }) {
 						Search
 					</DropdownToggle>
 					<DropdownMenu>
-						<DropdownItem>by All Fields</DropdownItem>
-						<DropdownItem>by All Calendar</DropdownItem>
-						<DropdownItem>by All Date Range</DropdownItem>
+						<DropdownItem>
+							<i className="fas fa-calendar-day" aria-hidden="true"></i> by
+							Calendar
+						</DropdownItem>
+						<DropdownItem>
+							<i className="fas fa-calendar-alt" aria-hidden="true"></i> by Date
+							Range
+						</DropdownItem>
 					</DropdownMenu>
 				</InputGroupButtonDropdown>
 			</InputGroup>
