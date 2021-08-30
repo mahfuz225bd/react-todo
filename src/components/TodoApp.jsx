@@ -238,8 +238,8 @@ const TodoApp = ({
 					<strong>
 						{deleteTodo.deleteTodoObj.title} (ID={deleteTodo.deleteTodoObj.id})
 					</strong>
-					. To delete click on <strong>Delete</strong> or press <kbd>Enter</kbd>
-					.<button type="submit" className="d-none"></button>
+					. To delete, click on <strong>Delete</strong> or press{' '}
+					<kbd>Enter</kbd>.<button type="submit" className="d-none"></button>
 				</Form>
 			</CustomModal>
 		</>

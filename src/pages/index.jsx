@@ -505,7 +505,7 @@ class Home extends Component {
 			'deleteAll',
 		];
 
-		const myLocalStorageData = JSON.parse(localStorage.getItem('data'));
+		let myLocalStorageData = JSON.parse(localStorage.getItem('data'));
 
 		if (containsInArray(operations, value)) {
 			switch (value) {
@@ -551,6 +551,17 @@ class Home extends Component {
 					});
 					break;
 				case 'deleteAll':
+					data.forEach((eachData) => {
+						if (eachData.selected) {
+							myLocalStorageData.forEach((eachLocalStorageData) => {
+								if (eachData.id === eachLocalStorageData.id) {
+									myLocalStorageData = myLocalStorageData.filter(
+										(each) => each.id !== eachData.id
+									);
+								}
+							});
+						}
+					});
 					break;
 				default:
 					break;
