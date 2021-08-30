@@ -43,6 +43,7 @@ class Home extends Component {
 			openAddTodoModal: false,
 			openViewTodoModal: false,
 			openEditTodoModal: false,
+			openDeleteTodoModal: false,
 		};
 
 		this.handleChange = this.handleChange.bind(this);
@@ -53,6 +54,8 @@ class Home extends Component {
 		this.setViewTodo = this.setViewTodo.bind(this);
 		this.setEditTodo = this.setEditTodo.bind(this);
 		this.updateTodo = this.updateTodo.bind(this);
+		this.setDeleteTodo = this.setDeleteTodo.bind(this);
+		this.deleteTodo = this.deleteTodo.bind(this);
 
 		this.handleSearch = this.handleSearch.bind(this);
 		this.handleFilterStatus = this.handleFilterStatus.bind(this);
@@ -237,7 +240,38 @@ class Home extends Component {
 		localStorage.setItem('data', JSON.stringify(myLocalStorageData));
 
 		// Set data + initEditTodo to state
-		this.setState({ data: getData(), newTodo: initEditTodo });
+		this.setState({ data: getData(), editTodo: initEditTodo });
+	}
+
+	setDeleteTodo(targetId) {
+		const filteredById = JSON.parse(localStorage.getItem('data')).filter(
+			(each) => each.id === targetId
+		)[0];
+
+		this.setState({
+			deleteTodo: {
+				id: filteredById.id,
+				title: filteredById.title,
+			},
+		});
+	}
+
+	deleteTodo(event) {
+		event.preventDefault();
+
+		const { deleteTodo } = this.state;
+		const myLocalStorageData = JSON.parse(localStorage.getItem('data'));
+
+		// Set data to localStorage
+		localStorage.setItem(
+			'data',
+			JSON.stringify(
+				myLocalStorageData.filter((each) => each.id !== deleteTodo.id)
+			)
+		);
+
+		// Set data + initEditTodo to state
+		this.setState({ data: getData(), deleteTodo: {} });
 	}
 
 	handleSearch(event) {
@@ -302,23 +336,29 @@ class Home extends Component {
 	}
 
 	toggleModal(targetModal) {
+		const {
+			openAddTodoModal,
+			openViewTodoModal,
+			openEditTodoModal,
+			openDeleteTodoModal,
+		} = this.state;
 		const modals = ['addTodo', 'viewTodo', 'editTodo', 'deleteTodo'];
 		if (containsInArray(modals, targetModal)) {
 			switch (targetModal) {
 				case 'addTodo':
 					this.setState({
-						openAddTodoModal: !this.state.openAddTodoModal,
+						openAddTodoModal: !openAddTodoModal,
 						newTodo: initNewTodo,
 					});
 					break;
 
 				case 'viewTodo':
 					this.setState({
-						openViewTodoModal: !this.state.openViewTodoModal,
+						openViewTodoModal: !openViewTodoModal,
 					});
 
-					//By closing, init viewTodo
-					if (this.state.openViewTodoModal) {
+					// By closing, init viewTodo
+					if (openViewTodoModal) {
 						this.setState({
 							viewTodo: {},
 						});
@@ -326,17 +366,28 @@ class Home extends Component {
 					break;
 				case 'editTodo':
 					this.setState({
-						openEditTodoModal: !this.state.openEditTodoModal,
+						openEditTodoModal: !openEditTodoModal,
 					});
 
-					//By closing, init editTodo
-					if (this.state.openEditTodoModal) {
+					// By closing, init editTodo
+					if (openEditTodoModal) {
 						this.setState({
 							editTodo: initEditTodo,
 						});
 					}
 					break;
+				case 'deleteTodo':
+					this.setState({
+						openDeleteTodoModal: !openDeleteTodoModal,
+					});
 
+					// By closing, init deleteTodo
+					if (openDeleteTodoModal) {
+						this.setState({
+							deleteTodo: {},
+						});
+					}
+					break;
 				default:
 					break;
 			}
@@ -526,6 +577,8 @@ class Home extends Component {
 			openViewTodoModal,
 			editTodo,
 			openEditTodoModal,
+			deleteTodo,
+			openDeleteTodoModal,
 		} = this.state;
 
 		let newData = this.performSearch(searchValue);
@@ -602,6 +655,15 @@ class Home extends Component {
 							toggle: () => this.toggleModal('editTodo'),
 						},
 						update: this.updateTodo,
+					}}
+					deleteTodo={{
+						deleteTodoObj: deleteTodo,
+						setDeleteTodo: this.setDeleteTodo,
+						modal: {
+							isOpen: openDeleteTodoModal,
+							toggle: () => this.toggleModal('deleteTodo'),
+						},
+						delete: this.deleteTodo,
 					}}
 				/>
 				<ReactTooltip />

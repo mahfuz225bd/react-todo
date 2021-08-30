@@ -11,7 +11,14 @@ import {
 	ListGroupItemText,
 } from 'reactstrap';
 
-function ListView({ todos, onSelect, onChangeStatus, viewTodo, editTodo }) {
+function ListView({
+	todos,
+	onSelect,
+	onChangeStatus,
+	viewTodo,
+	editTodo,
+	deleteTodo,
+}) {
 	return (
 		<div>
 			{todos.length ? (
@@ -96,7 +103,14 @@ function ListView({ todos, onSelect, onChangeStatus, viewTodo, editTodo }) {
 									<i className="fas fa-edit" aria-hidden="true"></i>{' '}
 									<span className="d-none d-md-inline">Edit</span>
 								</Button>
-								<Button color="danger" className="rounded-0">
+								<Button
+									color="danger"
+									className="rounded-0"
+									onClick={() => {
+										deleteTodo.setDeleteTodo(todo.id);
+										deleteTodo.modal.toggle();
+									}}
+								>
 									<i className="fas fa-minus-circle" aria-hidden="true"></i>{' '}
 									<span className="d-none d-md-inline">Delete</span>
 								</Button>
@@ -130,6 +144,18 @@ ListView.propTypes = {
 			toggle: PropTypes.func.isRequired,
 		}),
 		setViewTodo: PropTypes.func.isRequired,
+	}).isRequired,
+	editTodo: PropTypes.shape({
+		modal: PropTypes.shape({
+			toggle: PropTypes.func.isRequired,
+		}),
+		setEditTodo: PropTypes.func.isRequired,
+	}).isRequired,
+	deleteTodo: PropTypes.shape({
+		modal: PropTypes.shape({
+			toggle: PropTypes.func.isRequired,
+		}),
+		setDeleteTodo: PropTypes.func.isRequired,
 	}).isRequired,
 };
 

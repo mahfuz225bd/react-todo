@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { Container, Col, Row, Button, Table } from 'reactstrap';
+import { Container, Col, Row, Button, Table, Form } from 'reactstrap';
 import Controllers from './Controllers';
 import ListView from './ListView';
 import TableView from './TableView';
@@ -17,6 +17,7 @@ const TodoApp = ({
 	onChangeStatus,
 	viewTodo,
 	editTodo,
+	deleteTodo,
 }) => {
 	const submitAddTodoForm = () => {
 		document.querySelector('#addTodo button[type=submit]').click();
@@ -24,6 +25,10 @@ const TodoApp = ({
 
 	const submitEditTodoForm = () => {
 		document.querySelector('#editTodo button[type=submit]').click();
+	};
+
+	const submitDeleteTodoForm = () => {
+		document.querySelector('#deleteTodo button[type=submit]').click();
 	};
 
 	const getView = () => {
@@ -40,6 +45,7 @@ const TodoApp = ({
 				onChangeStatus={onChangeStatus}
 				viewTodo={viewTodo}
 				editTodo={editTodo}
+				deleteTodo={deleteTodo}
 			/>
 		);
 	};
@@ -187,7 +193,7 @@ const TodoApp = ({
 							color="primary"
 							data-tip="Confirm Update (Enter)"
 							onClick={() => {
-								submitEditTodoForm()
+								submitEditTodoForm();
 								editTodo.modal.toggle();
 							}}
 						>
@@ -201,6 +207,40 @@ const TodoApp = ({
 					onChangeInput={editTodo.onChangeInput}
 					onSubmit={editTodo.update}
 				/>
+			</CustomModal>
+			{/* Modal: DeleteTodo */}
+			<CustomModal
+				icon={
+					<>
+						<i className="fas fa-trash" aria-hidden="true"></i>
+					</>
+				}
+				title="Delete Todo"
+				isOpen={deleteTodo.modal.isOpen}
+				onToggle={deleteTodo.modal.toggle}
+				footerContent={
+					<>
+						<Button
+							color="danger"
+							data-tip="Delete"
+							onClick={() => {
+								submitDeleteTodoForm();
+								deleteTodo.modal.toggle();
+							}}
+						>
+							Delete
+						</Button>
+					</>
+				}
+			>
+				<Form id="deleteTodo" onSubmit={deleteTodo.delete}>
+					Are you confirm to delete{' '}
+					<strong>
+						{deleteTodo.deleteTodoObj.title} (ID={deleteTodo.deleteTodoObj.id})
+					</strong>
+					. To delete click on <strong>Delete</strong> or press <kbd>Enter</kbd>
+					.<button type="submit" className="d-none"></button>
+				</Form>
 			</CustomModal>
 		</>
 	);
