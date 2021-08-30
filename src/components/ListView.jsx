@@ -128,6 +128,18 @@ function ListView({
 }
 
 ListView.propTypes = {
+	deleteTodo: PropTypes.shape({
+		modal: PropTypes.shape({
+			toggle: PropTypes.func.isRequired,
+		}),
+		setDeleteTodo: PropTypes.func.isRequired,
+	}).isRequired,
+	editTodo: PropTypes.shape({
+		modal: PropTypes.shape({
+			toggle: PropTypes.func.isRequired,
+		}),
+		setEditTodo: PropTypes.func.isRequired,
+	}).isRequired,
 	onChangeStatus: PropTypes.func.isRequired,
 	onSelect: PropTypes.func.isRequired,
 	todos: PropTypes.arrayOf(
@@ -146,18 +158,6 @@ ListView.propTypes = {
 			toggle: PropTypes.func.isRequired,
 		}),
 		setViewTodo: PropTypes.func.isRequired,
-	}).isRequired,
-	editTodo: PropTypes.shape({
-		modal: PropTypes.shape({
-			toggle: PropTypes.func.isRequired,
-		}),
-		setEditTodo: PropTypes.func.isRequired,
-	}).isRequired,
-	deleteTodo: PropTypes.shape({
-		modal: PropTypes.shape({
-			toggle: PropTypes.func.isRequired,
-		}),
-		setDeleteTodo: PropTypes.func.isRequired,
 	}).isRequired,
 };
 

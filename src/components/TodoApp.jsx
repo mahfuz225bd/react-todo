@@ -254,7 +254,7 @@ TodoApp.propTypes = {
 	newTodo: PropTypes.shape({
 		newTodoObj: PropTypes.object.isRequired,
 		onChangeInput: PropTypes.func.isRequired,
-		onSubmit: PropTypes.func.isRequired,
+		add: PropTypes.func.isRequired,
 	}).isRequired,
 	controllers: PropTypes.object.isRequired,
 	onSelect: PropTypes.func.isRequired,

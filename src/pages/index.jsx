@@ -116,7 +116,7 @@ class Home extends Component {
 		myLocalStorageData.push({
 			id: getID,
 			title: title,
-			datetime: new Date(),
+			datetime: getDateTimeValue(new Date()),
 			description: description,
 			started: started,
 			completed: false,
