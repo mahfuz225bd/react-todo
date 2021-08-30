@@ -116,7 +116,7 @@ class Home extends Component {
 		myLocalStorageData.push({
 			id: getID,
 			title: title,
-			datetime: getDateTimeValue(new Date()),
+			datetime: new Date(),
 			description: description,
 			started: started,
 			completed: false,
@@ -452,9 +452,9 @@ class Home extends Component {
 
 		switch (this.state.sort) {
 			case 'latest':
-				return data.sort((x, y) => y.id - x.id);
+				return data.sort((x, y) => new Date(y.datetime) - new Date(x.datetime));
 			case 'oldest':
-				return data.sort((x, y) => x.id - y.id);
+				return data.sort((x, y) => new Date(x.datetime) - new Date(y.datetime));
 			default:
 				break;
 		}
