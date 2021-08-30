@@ -22,6 +22,10 @@ const TodoApp = ({
 		document.querySelector('#addTodo button[type=submit]').click();
 	};
 
+	const submitEditTodoForm = () => {
+		document.querySelector('#editTodo button[type=submit]').click();
+	};
+
 	const getView = () => {
 		return controllers.dataView.currView === 'table' ? (
 			<TableView
@@ -183,8 +187,8 @@ const TodoApp = ({
 							color="primary"
 							data-tip="Confirm Update (Enter)"
 							onClick={() => {
-								editTodo.update();
-								editTodo.modal.toggle()
+								submitEditTodoForm()
+								editTodo.modal.toggle();
 							}}
 						>
 							Update
@@ -195,6 +199,7 @@ const TodoApp = ({
 				<EditTodoForm
 					editTodoObj={editTodo.editTodoObj}
 					onChangeInput={editTodo.onChangeInput}
+					onSubmit={editTodo.update}
 				/>
 			</CustomModal>
 		</>

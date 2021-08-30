@@ -217,7 +217,9 @@ class Home extends Component {
 		});
 	}
 
-	updateTodo() {
+	updateTodo(event) {
+		event.preventDefault();
+
 		const { editTodo } = this.state;
 		const myLocalStorageData = JSON.parse(localStorage.getItem('data'));
 

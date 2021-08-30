@@ -12,7 +12,7 @@ const Required = () => (
 function EditTodoForm({ editTodoObj, onChangeInput, onSubmit }) {
 	return (
 		<div>
-			<Form id="addTodo" autoComplete="off">
+			<Form id="editTodo" autoComplete="off" onSubmit={onSubmit}>
 				<FormGroup className="mb-2" row>
 					<Label for="title" sm={3}>
 						Task Name <Required />
@@ -123,6 +123,7 @@ function EditTodoForm({ editTodoObj, onChangeInput, onSubmit }) {
 								Start
 							</Button>
 						)}
+						<button type="submit" style={{ display: 'none' }}></button>
 					</Col>
 				</FormGroup>
 			</Form>
