@@ -11,7 +11,7 @@ import {
 	ListGroupItemText,
 } from 'reactstrap';
 
-function ListView({ todos, onSelect, onChangeStatus, viewTodo }) {
+function ListView({ todos, onSelect, onChangeStatus, viewTodo, editTodo }) {
 	return (
 		<div>
 			{todos.length ? (
@@ -82,15 +82,22 @@ function ListView({ todos, onSelect, onChangeStatus, viewTodo }) {
 										viewTodo.modal.toggle();
 									}}
 								>
-									<i class="fas fa-search" aria-hidden="true"></i>{' '}
+									<i className="fas fa-search" aria-hidden="true"></i>{' '}
 									<span className="d-none d-md-inline">View</span>
 								</Button>
-								<Button color="secondary" className="rounded-0">
-									<i class="fas fa-edit" aria-hidden="true"></i>{' '}
+								<Button
+									color="secondary"
+									className="rounded-0"
+									onClick={() => {
+										editTodo.setEditTodo(todo.id);
+										editTodo.modal.toggle();
+									}}
+								>
+									<i className="fas fa-edit" aria-hidden="true"></i>{' '}
 									<span className="d-none d-md-inline">Edit</span>
 								</Button>
 								<Button color="danger" className="rounded-0">
-									<i class="fas fa-minus-circle" aria-hidden="true"></i>{' '}
+									<i className="fas fa-minus-circle" aria-hidden="true"></i>{' '}
 									<span className="d-none d-md-inline">Delete</span>
 								</Button>
 							</ButtonGroup>

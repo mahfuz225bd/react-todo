@@ -88,15 +88,15 @@ function TableView({ todos, onSelect, onChangeStatus }) {
 								<td>
 									<ButtonGroup className="align-self-center" size="sm">
 										<Button color="primary" className="rounded-0">
-											<i class="fas fa-search" aria-hidden="true"></i>{' '}
+											<i className="fas fa-search" aria-hidden="true"></i>{' '}
 											<span className="d-none d-md-inline">View</span>
 										</Button>
 										<Button color="secondary" className="rounded-0">
-											<i class="fas fa-edit" aria-hidden="true"></i>{' '}
+											<i className="fas fa-edit" aria-hidden="true"></i>{' '}
 											<span className="d-none d-md-inline">Edit</span>
 										</Button>
 										<Button color="danger" className="rounded-0">
-											<i class="fas fa-minus-circle" aria-hidden="true"></i>{' '}
+											<i className="fas fa-minus-circle" aria-hidden="true"></i>{' '}
 											<span className="d-none d-md-inline">Delete</span>
 										</Button>
 									</ButtonGroup>

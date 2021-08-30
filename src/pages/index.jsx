@@ -5,6 +5,7 @@ import ReactTooltip from 'react-tooltip';
 import getData from '../assets/js/getLocalStorageData';
 import containsInArray from '../assets/js/error.ContainsInArray';
 import formattedDateTime from '../assets/js/formattedDateTime';
+import getDateTimeValue from '../assets/js/getDateStringForHTMLInput';
 
 import TodoApp from '../components/TodoApp';
 
@@ -14,6 +15,14 @@ const initNewTodo = {
 	started: false,
 };
 
+const initEditTodo = {
+	title: '',
+	datetime: getDateTimeValue(new Date()),
+	description: '',
+	started: false,
+	completed: false,
+};
+
 class Home extends Component {
 	constructor(props) {
 		super(props);
@@ -21,7 +30,7 @@ class Home extends Component {
 			data: getData(),
 			newTodo: initNewTodo,
 			viewTodo: {},
-			editTodo: {},
+			editTodo: initEditTodo,
 			deleteTodo: {},
 
 			searchValue: '',
@@ -33,6 +42,7 @@ class Home extends Component {
 
 			openAddTodoModal: false,
 			openViewTodoModal: false,
+			openEditTodoModal: false,
 		};
 
 		this.handleChange = this.handleChange.bind(this);
@@ -41,6 +51,8 @@ class Home extends Component {
 		this.handleSelect = this.handleSelect.bind(this);
 		this.handleStatus = this.handleStatus.bind(this);
 		this.setViewTodo = this.setViewTodo.bind(this);
+		this.setEditTodo = this.setEditTodo.bind(this);
+		this.updateTodo = this.updateTodo.bind(this);
 
 		this.handleSearch = this.handleSearch.bind(this);
 		this.handleFilterStatus = this.handleFilterStatus.bind(this);
@@ -62,12 +74,20 @@ class Home extends Component {
 						...this.state.newTodo,
 						[event.target.name]: event.target.checked,
 					},
+					editTodo: {
+						...this.state.editTodo,
+						[event.target.name]: event.target.checked,
+					},
 				});
 				break;
 			default:
 				this.setState({
 					newTodo: {
 						...this.state.newTodo,
+						[event.target.name]: event.target.value,
+					},
+					editTodo: {
+						...this.state.editTodo,
 						[event.target.name]: event.target.value,
 					},
 				});
@@ -79,10 +99,10 @@ class Home extends Component {
 
 		const { title, description, started } = this.state.newTodo;
 
-		const data = JSON.parse(localStorage.getItem('data'));
+		const myLocalStorageData = JSON.parse(localStorage.getItem('data'));
 		const getID = Number(localStorage.getItem('currID'));
 
-		data.push({
+		myLocalStorageData.push({
 			id: getID,
 			title: title,
 			datetime: formattedDateTime(),
@@ -92,7 +112,7 @@ class Home extends Component {
 		});
 
 		// Set data to localStorage
-		localStorage.setItem('data', JSON.stringify(data));
+		localStorage.setItem('data', JSON.stringify(myLocalStorageData));
 
 		// Set data + initNewTodo to state
 		this.setState({ data: getData(), newTodo: initNewTodo });
@@ -180,6 +200,44 @@ class Home extends Component {
 		});
 	}
 
+	setEditTodo(targetId) {
+		const filteredById = JSON.parse(localStorage.getItem('data')).filter(
+			(each) => each.id === targetId
+		)[0];
+
+		this.setState({
+			editTodo: {
+				id: filteredById.id,
+				title: filteredById.title,
+				datetime: filteredById.datetime,
+				description: filteredById.description,
+				started: filteredById.started,
+				completed: filteredById.completed,
+			},
+		});
+	}
+
+	updateTodo() {
+		const { editTodo } = this.state;
+		const myLocalStorageData = JSON.parse(localStorage.getItem('data'));
+
+		myLocalStorageData.forEach((each) => {
+			if (editTodo.id === each.id) {
+				each.title = editTodo.title;
+				each.datetime = editTodo.datetime;
+				each.description = editTodo.description;
+				each.started = editTodo.started;
+				each.completed = editTodo.completed;
+			}
+		});
+
+		// Set data to localStorage
+		localStorage.setItem('data', JSON.stringify(myLocalStorageData));
+
+		// Set data + initEditTodo to state
+		this.setState({ data: getData(), newTodo: initEditTodo });
+	}
+
 	handleSearch(event) {
 		this.setState({
 			searchValue: event.target.value,
@@ -261,6 +319,18 @@ class Home extends Component {
 					if (this.state.openViewTodoModal) {
 						this.setState({
 							viewTodo: {},
+						});
+					}
+					break;
+				case 'editTodo':
+					this.setState({
+						openEditTodoModal: !this.state.openEditTodoModal,
+					});
+
+					//By closing, init editTodo
+					if (this.state.openEditTodoModal) {
+						this.setState({
+							editTodo: initEditTodo,
 						});
 					}
 					break;
@@ -452,6 +522,8 @@ class Home extends Component {
 			openAddTodoModal,
 			viewTodo,
 			openViewTodoModal,
+			editTodo,
+			openEditTodoModal,
 		} = this.state;
 
 		let newData = this.performSearch(searchValue);
@@ -518,6 +590,16 @@ class Home extends Component {
 							isOpen: openViewTodoModal,
 							toggle: () => this.toggleModal('viewTodo'),
 						},
+					}}
+					editTodo={{
+						editTodoObj: editTodo,
+						onChangeInput: this.handleChange,
+						setEditTodo: this.setEditTodo,
+						modal: {
+							isOpen: openEditTodoModal,
+							toggle: () => this.toggleModal('editTodo'),
+						},
+						update: this.updateTodo,
 					}}
 				/>
 				<ReactTooltip />

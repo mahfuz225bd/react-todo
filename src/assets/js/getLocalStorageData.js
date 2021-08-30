@@ -11,7 +11,7 @@ export default function getData() {
 
 	const result = [];
 
-	// Appending each data from localStorage to result array with `selected: false`
+	// Appending each data from localStorage to result array (of Object) with `selected: false`
 	getLocalStorageData.forEach((each) => {
 		result.push({
 			selected: false,

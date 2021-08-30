@@ -7,6 +7,7 @@ import ListView from './ListView';
 import TableView from './TableView';
 import CustomModal from './CustomModal';
 import AddTodoForm from './AddTodoForm';
+import EditTodoForm from './EditTodoForm';
 
 const TodoApp = ({
 	data,
@@ -15,6 +16,7 @@ const TodoApp = ({
 	onSelect,
 	onChangeStatus,
 	viewTodo,
+	editTodo,
 }) => {
 	const submitAddTodoForm = () => {
 		document.querySelector('#addTodo button[type=submit]').click();
@@ -33,6 +35,7 @@ const TodoApp = ({
 				onSelect={onSelect}
 				onChangeStatus={onChangeStatus}
 				viewTodo={viewTodo}
+				editTodo={editTodo}
 			/>
 		);
 	};
@@ -56,7 +59,7 @@ const TodoApp = ({
 				</Row>
 			</Container>
 
-			{/* Modal: AddTodoForm */}
+			{/* Modal: AddTodo */}
 			<CustomModal
 				icon={
 					<>
@@ -101,6 +104,7 @@ const TodoApp = ({
 					onSubmit={newTodo.onSubmit}
 				/>
 			</CustomModal>
+			{/* Modal: ViewTodo */}
 			<CustomModal
 				icon={
 					<>
@@ -129,37 +133,69 @@ const TodoApp = ({
 						<col width="110" />
 						<col />
 					</colgroup>
-					<tr>
-						<th>ID#</th>
-						<td>{viewTodo.viewTodoObj.id}</td>
-					</tr>
-					<tr>
-						<th>Title</th>
-						<td>{viewTodo.viewTodoObj.title}</td>
-					</tr>
-					<tr>
-						<th>Date/Time</th>
-						<td>{viewTodo.viewTodoObj.datetime}</td>
-					</tr>
-					<tr>
-						<th>Description</th>
-						<td>{viewTodo.viewTodoObj.description}</td>
-					</tr>
-					<tr>
-						<th>Status</th>
-						<td
-							className={`${
-								viewTodo.viewTodoObj.status === 'Running'
-									? 'text-success'
-									: viewTodo.viewTodoObj.status === 'Completed'
-									? 'text-danger'
-									: ''
-							} fw-bold`}
-						>
-							{viewTodo.viewTodoObj.status}
-						</td>
-					</tr>
+					<tbody>
+						<tr>
+							<th>ID#</th>
+							<td>{viewTodo.viewTodoObj.id}</td>
+						</tr>
+						<tr>
+							<th>Task Name</th>
+							<td>{viewTodo.viewTodoObj.title}</td>
+						</tr>
+						<tr>
+							<th>Date/Time</th>
+							<td>{viewTodo.viewTodoObj.datetime}</td>
+						</tr>
+						<tr>
+							<th>Description</th>
+							<td>{viewTodo.viewTodoObj.description}</td>
+						</tr>
+						<tr>
+							<th>Status</th>
+							<td
+								className={`${
+									viewTodo.viewTodoObj.status === 'Running'
+										? 'text-success'
+										: viewTodo.viewTodoObj.status === 'Completed'
+										? 'text-danger'
+										: ''
+								} fw-bold`}
+							>
+								{viewTodo.viewTodoObj.status}
+							</td>
+						</tr>
+					</tbody>
 				</Table>
+			</CustomModal>
+			{/* Modal: EditTodo */}
+			<CustomModal
+				icon={
+					<>
+						<i className="fas fa-edit" aria-hidden="true"></i>
+					</>
+				}
+				title="Edit Todo"
+				isOpen={editTodo.modal.isOpen}
+				onToggle={editTodo.modal.toggle}
+				footerContent={
+					<>
+						<Button
+							color="primary"
+							data-tip="Confirm Update (Enter)"
+							onClick={() => {
+								editTodo.update();
+								editTodo.modal.toggle()
+							}}
+						>
+							Update
+						</Button>
+					</>
+				}
+			>
+				<EditTodoForm
+					editTodoObj={editTodo.editTodoObj}
+					onChangeInput={editTodo.onChangeInput}
+				/>
 			</CustomModal>
 		</>
 	);
@@ -173,7 +209,6 @@ TodoApp.propTypes = {
 		onSubmit: PropTypes.func.isRequired,
 	}).isRequired,
 	controllers: PropTypes.object.isRequired,
-	disabled: PropTypes.bool.isRequired,
 	onSelect: PropTypes.func.isRequired,
 	onChangeStatus: PropTypes.func.isRequired,
 };
