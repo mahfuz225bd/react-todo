@@ -14,7 +14,7 @@ function ClearSearchFilterSort({ stateValues, action, disabled }) {
 	return (
 		<>
 			<Button
-				color="warning"
+				color="danger"
 				onClick={action}
 				hidden={JSON.stringify(stateValues) === target}
 				data-tip="Clear Search/Filter/Sort"

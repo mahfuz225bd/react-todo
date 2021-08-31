@@ -24,11 +24,19 @@ function Export({ data }) {
 					<i className="fa fa-file-export" aria-hidden="true"></i> Export
 				</DropdownToggle>
 				<DropdownMenu>
-					<DropdownItem onClick={() => undefined}>
+					<DropdownItem
+						onClick={() =>
+							alert('Feature: Export as excel is not currently available.')
+						}
+					>
 						<i className="fas fa-file-excel" aria-hidden="true"></i> Export as
 						Excel
 					</DropdownItem>
-					<DropdownItem onClick={() => undefined}>
+					<DropdownItem
+						onClick={() =>
+							alert('Feature: Export as csv is not currently available.')
+						}
+					>
 						<i className="fas fa-file-csv" aria-hidden="true"></i> Export as CSV
 					</DropdownItem>
 				</DropdownMenu>
