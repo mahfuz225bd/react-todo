@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 
 import moment from 'moment';
 
-import ReactTooltip from 'react-tooltip';
-
 import getData from '../assets/js/getLocalStorageData';
 import containsInArray from '../assets/js/error.ContainsInArray';
+
+import ReactTooltip from 'react-tooltip';
 
 import TodoApp from '../components/TodoApp';
 

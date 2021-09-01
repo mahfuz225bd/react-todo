@@ -11,6 +11,8 @@ import CustomModal from './CustomModal';
 import AddTodoForm from './AddTodoForm';
 import EditTodoForm from './EditTodoForm';
 
+import Tooltip from '../assets/components/Tooltip/Tooltip';
+
 const TodoApp = ({
 	data,
 	newTodo,
@@ -86,30 +88,41 @@ const TodoApp = ({
 				onToggle={controllers.openAddTodo.toggle}
 				footerContent={
 					<>
-						<Button
-							color="primary"
-							data-tip="Add (Ctrl + enter)"
-							onClick={() => {
-								submitAddTodoForm();
-								// After submitting, toggle to close addTodoModal
-								if (document.querySelector('#addTodo #title[required]').value) {
-									controllers.openAddTodo.toggle();
-								}
-							}}
+						<Tooltip
+							placement="bottom"
+							text="Add (Ctrl + enter)"
+							customCSS={{ width: '145px' }}
 						>
-							<i className="fas fa-plus" aria-hidden="true"></i> Add
-						</Button>
-						<Button
-							color="primary"
-							onClick={() => {
-								submitAddTodoForm();
-								// Focus for the next form input
-								document.querySelector('#addTodo #title').focus();
-							}}
-						>
-							<i className="fas fa-asterisk" aria-hidden="true"></i> Save {'&'}{' '}
-							New
-						</Button>
+							<Button
+								color="primary"
+								data-tooltip=""
+								onClick={() => {
+									submitAddTodoForm();
+									// After submitting, toggle to close addTodoModal
+									if (
+										document.querySelector('#addTodo #title[required]').value
+									) {
+										controllers.openAddTodo.toggle();
+									}
+								}}
+							>
+								<i className="fas fa-plus" aria-hidden="true"></i> Add
+							</Button>
+						</Tooltip>
+
+						<Tooltip placement="bottom" text="Add (Enter)">
+							<Button
+								color="primary"
+								onClick={() => {
+									submitAddTodoForm();
+									// Focus for the next form input
+									document.querySelector('#addTodo #title').focus();
+								}}
+							>
+								<i className="fas fa-asterisk" aria-hidden="true"></i> Save{' '}
+								{'&'} New
+							</Button>
+						</Tooltip>
 					</>
 				}
 			>
@@ -131,15 +144,16 @@ const TodoApp = ({
 				onToggle={viewTodo.modal.toggle}
 				footerContent={
 					<>
-						<Button
-							color="primary"
-							data-tip="OK (Enter)"
-							onClick={() => {
-								viewTodo.modal.toggle();
-							}}
-						>
-							OK
-						</Button>
+						<Tooltip placement="bottom" text="OK (Enter)">
+							<Button
+								color="primary"
+								onClick={() => {
+									viewTodo.modal.toggle();
+								}}
+							>
+								OK
+							</Button>
+						</Tooltip>
 					</>
 				}
 			>
@@ -194,16 +208,17 @@ const TodoApp = ({
 				onToggle={editTodo.modal.toggle}
 				footerContent={
 					<>
-						<Button
-							color="primary"
-							data-tip="Confirm Update (Enter)"
-							onClick={() => {
-								submitEditTodoForm();
-								editTodo.modal.toggle();
-							}}
-						>
-							Update
-						</Button>
+						<Tooltip placement="bottom" text="Update (Enter)">
+							<Button
+								color="primary"
+								onClick={() => {
+									submitEditTodoForm();
+									editTodo.modal.toggle();
+								}}
+							>
+								Update
+							</Button>
+						</Tooltip>
 					</>
 				}
 			>
@@ -225,16 +240,17 @@ const TodoApp = ({
 				onToggle={deleteTodo.modal.toggle}
 				footerContent={
 					<>
-						<Button
-							color="danger"
-							data-tip="Delete"
-							onClick={() => {
-								submitDeleteTodoForm();
-								deleteTodo.modal.toggle();
-							}}
-						>
-							Delete
-						</Button>
+						<Tooltip placement="bottom" text="Delete (Enter)">
+							<Button
+								color="danger"
+								onClick={() => {
+									submitDeleteTodoForm();
+									deleteTodo.modal.toggle();
+								}}
+							>
+								Delete
+							</Button>
+						</Tooltip>
 					</>
 				}
 			>

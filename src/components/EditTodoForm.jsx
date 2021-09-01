@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { Col, Form, FormGroup, Label, Input, Button } from 'reactstrap';
 
 import getDateTimeValue from '../assets/js/getDateStringForHTMLInput';
+import Tooltip from '../assets/components/Tooltip/Tooltip';
 
 const Required = () => (
 	<span style={{ color: 'red', fontWeight: 'bold' }}>*</span>
@@ -83,45 +84,51 @@ function EditTodoForm({ editTodoObj, onChangeInput, onSubmit }) {
 							onChange={onChangeInput}
 						/>
 						{editTodoObj.started && !editTodoObj.completed ? (
-							<Button
-								color="success"
-								className="rounded-0"
-								data-tip="Incomplete, click to mark as complete"
-								data-place="left"
-								onClick={() => {
-									document.getElementById('chk_completed').click();
-								}}
+							<Tooltip
+								text="Incomplete, click to mark as complete"
+								customCSS={{ width: '235px' }}
 							>
-								Running
-							</Button>
-						) : editTodoObj.started && editTodoObj.completed ? (
-							<Button
-								color="danger"
-								className="rounded-0"
-								data-tip="Completed, click to mark as incomplete"
-								data-place="left"
-								onClick={() => {
-									// Uncheck both (completed and started)
-									setTimeout(() => {
+								<Button
+									color="success"
+									className="rounded-0"
+									onClick={() => {
 										document.getElementById('chk_completed').click();
-									});
-									document.getElementById('chk_started').click();
-								}}
+									}}
+								>
+									Running
+								</Button>
+							</Tooltip>
+						) : editTodoObj.started && editTodoObj.completed ? (
+							<Tooltip
+								text="Completed, click to mark as incomplete"
+								customCSS={{ width: '235px' }}
 							>
-								Completed
-							</Button>
+								<Button
+									color="danger"
+									className="rounded-0"
+									onClick={() => {
+										// Uncheck both (completed and started)
+										setTimeout(() => {
+											document.getElementById('chk_completed').click();
+										});
+										document.getElementById('chk_started').click();
+									}}
+								>
+									Completed
+								</Button>
+							</Tooltip>
 						) : (
-							<Button
-								color="primary"
-								className="rounded-0"
-								data-tip="Start task"
-								data-place="left"
-								onClick={() => {
-									document.getElementById('chk_started').click();
-								}}
-							>
-								Start
-							</Button>
+							<Tooltip text="Start task">
+								<Button
+									color="primary"
+									className="rounded-0"
+									onClick={() => {
+										document.getElementById('chk_started').click();
+									}}
+								>
+									Start
+								</Button>
+							</Tooltip>
 						)}
 						<button type="submit" style={{ display: 'none' }}></button>
 					</Col>

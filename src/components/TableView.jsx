@@ -29,7 +29,7 @@ function TableView({
 						<colgroup>
 							<col style={{ width: '42px' }} />
 							<col />
-							<col style={{ width: '205px', minWidth: '205px' }} />
+							<col style={{ width: '210px', minWidth: '210px' }} />
 							<col style={{ width: '105px' }} />
 							<col style={{ width: '210px' }} />
 						</colgroup>

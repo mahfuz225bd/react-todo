@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { Modal, ModalHeader, ModalBody, ModalFooter, Button } from 'reactstrap';
+import Tooltip from '../../assets/components/Tooltip/Tooltip';
 
 function CustomModal({
 	icon,
@@ -17,15 +18,17 @@ function CustomModal({
 			<Modal isOpen={isOpen} toggle={onToggle}>
 				<ModalHeader
 					close={
-						<button
-							className="btn-close"
-							onClick={() => {
-								onToggle();
-								onClose && onClose();
-							}}
-						>
-							&times;
-						</button>
+						<Tooltip text="Close (ESC)">
+							<button
+								className="btn-close"
+								onClick={() => {
+									onToggle();
+									onClose && onClose();
+								}}
+							>
+								&times;
+							</button>
+						</Tooltip>
 					}
 				>
 					{icon} {title}
@@ -33,15 +36,17 @@ function CustomModal({
 				<ModalBody>{children}</ModalBody>
 				<ModalFooter>
 					{footerContent}
-					<Button
-						color="secondary"
-						onClick={() => {
-							onToggle();
-							onClose && onClose();
-						}}
-					>
-						Cancel
-					</Button>
+					<Tooltip text="Cancel (ESC)">
+						<Button
+							color="secondary"
+							onClick={() => {
+								onToggle();
+								onClose && onClose();
+							}}
+						>
+							Cancel
+						</Button>
+					</Tooltip>
 				</ModalFooter>
 			</Modal>
 		</div>
