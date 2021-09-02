@@ -24,15 +24,7 @@ function DataView({
 	};
 
 	return (
-		<div
-			onKeyDown={(event) => {
-				if (
-					selectedItems.some((each) => each.selected) &&
-					event.key === 'Shift'
-				) {
-				}
-			}}
-		>
+		<div>
 			{(function () {
 				switch (currView) {
 					case 'table':

@@ -87,6 +87,7 @@ function ListView({
 									<Button
 										color="primary"
 										className="rounded-0"
+										data-tip="View Details"
 										onClick={() => {
 											viewTodo.setViewTodo(todo.id);
 											viewTodo.modal.toggle();
@@ -98,6 +99,7 @@ function ListView({
 									<Button
 										color="secondary"
 										className="rounded-0"
+										data-tip="Edit Todo"
 										onClick={() => {
 											editTodo.setEditTodo(todo.id);
 											editTodo.modal.toggle();
@@ -112,6 +114,7 @@ function ListView({
 									<Button
 										color="danger"
 										className="rounded-0"
+										data-tip="Delete Todo"
 										onClick={() => {
 											deleteTodo.setDeleteTodo(todo.id);
 											deleteTodo.modal.toggle();
