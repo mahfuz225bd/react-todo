@@ -14,7 +14,7 @@ function CustomModal({
 	children,
 }) {
 	return (
-		<div onKeyDown={(event) => onKeyDown(event)}>
+		<div className="d-inline-block" onKeyDown={(event) => onKeyDown(event)}>
 			<Modal isOpen={isOpen} toggle={onToggle}>
 				<ModalHeader
 					close={

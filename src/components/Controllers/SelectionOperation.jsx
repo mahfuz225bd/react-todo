@@ -9,18 +9,35 @@ import {
 	DropdownItem,
 } from 'reactstrap';
 
+import Confirm from '../CustomModal/Confirm';
+
 function SelectionOperation({
 	data,
 	filterStatusValue,
 	performMultiSelection,
 	performSelectionOperation,
 }) {
+	const selectedTodos = data.filter((each) => each.selected);
+
 	const [selectOptionsOpen, setSelectOptionsOpen] = useState(false);
 	const toggleSelectOptions = () => setSelectOptionsOpen(!selectOptionsOpen);
 
 	const [operationsWSelectedOpen, setOperationsWSelectedOpen] = useState(false);
 	const toggleOperationWSelected = () =>
 		setOperationsWSelectedOpen(!operationsWSelectedOpen);
+
+	const [confirmStart, setConfirmStart] = useState(false);
+	const toggleConfirmStart = () => setConfirmStart(!confirmStart);
+
+	const [confirmComplete, setConfirmComplete] = useState(false);
+	const toggleConfirmComplete = () => setConfirmComplete(!confirmComplete);
+
+	const [confirmIncomplete, setConfirmIncomplete] = useState(false);
+	const toggleConfirmIncomplete = () =>
+		setConfirmIncomplete(!confirmIncomplete);
+
+	const [confirmDeleteAll, setConfirmDeleteAll] = useState(false);
+	const toggleConfirmDeleteAll = () => setConfirmDeleteAll(!confirmDeleteAll);
 
 	return (
 		<>
@@ -96,7 +113,7 @@ function SelectionOperation({
 					</DropdownToggle>
 					<DropdownMenu>
 						<DropdownItem
-							onClick={() => performSelectionOperation(data, 'startAll')}
+							onClick={toggleConfirmStart}
 							// If any selected item, ready to start
 							disabled={
 								!data.some(
@@ -107,7 +124,7 @@ function SelectionOperation({
 							Start
 						</DropdownItem>
 						<DropdownItem
-							onClick={() => performSelectionOperation(data, 'completeAll')}
+							onClick={toggleConfirmComplete}
 							// If any selected item, ready to complete
 							disabled={
 								!data.some(
@@ -121,7 +138,7 @@ function SelectionOperation({
 							Complete
 						</DropdownItem>
 						<DropdownItem
-							onClick={() => performSelectionOperation(data, 'incompleteAll')}
+							onClick={toggleConfirmIncomplete}
 							// If any selected item, ready to incomplete
 							disabled={
 								!data.some(
@@ -137,13 +154,70 @@ function SelectionOperation({
 						<DropdownItem divider />
 						<DropdownItem
 							className="text-danger"
-							onClick={() => performSelectionOperation(data, 'deleteAll')}
+							onClick={toggleConfirmDeleteAll}
 						>
 							<i className="fas fa-trash-alt" aria-hidden="true"></i> Delete All
 						</DropdownItem>
 					</DropdownMenu>
 				</ButtonDropdown>
 			</ButtonGroup>
+			{/* Confirm: Start */}
+			<Confirm
+				isOpen={confirmStart}
+				onToggle={toggleConfirmStart}
+				onConfirm={() => performSelectionOperation(data, 'startAll')}
+			>
+				Are you confirm to <i>start</i>{' '}
+				<strong>
+					{(selectedTodos.length === 1 &&
+						`${selectedTodos[0].title} (Record ID=${selectedTodos[0].id})`) ||
+						`${selectedTodos.length} todos(s)`}
+				</strong>
+				?
+			</Confirm>
+			{/* Confirm: Complete */}
+			<Confirm
+				isOpen={confirmComplete}
+				onToggle={toggleConfirmComplete}
+				onConfirm={() => performSelectionOperation(data, 'completeAll')}
+			>
+				Are you confirm to <i>complete</i>{' '}
+				<strong>
+					{(selectedTodos.length === 1 &&
+						`${selectedTodos[0].title} (Record ID=${selectedTodos[0].id})`) ||
+						`${selectedTodos.length} todos(s)`}
+				</strong>
+				?
+			</Confirm>
+			{/* Confirm: Incomplete */}
+			<Confirm
+				isOpen={confirmIncomplete}
+				onToggle={toggleConfirmIncomplete}
+				onConfirm={() => performSelectionOperation(data, 'incompleteAll')}
+			>
+				Are you confirm to <i>Incomplete</i>{' '}
+				<strong>
+					{(selectedTodos.length === 1 &&
+						`${selectedTodos[0].title} (Record ID=${selectedTodos[0].id})`) ||
+						`${selectedTodos.length} todos(s)`}
+				</strong>
+				?
+			</Confirm>
+			{/* Confirm: Delete All */}
+			<Confirm
+				isOpen={confirmDeleteAll}
+				onToggle={toggleConfirmDeleteAll}
+				color="danger"
+				onConfirm={() => performSelectionOperation(data, 'deleteAll')}
+			>
+				Are you confirm to <i>delete</i>{' '}
+				<strong>
+					{(selectedTodos.length === 1 &&
+						`${selectedTodos[0].title} (Record ID=${selectedTodos[0].id})`) ||
+						`${selectedTodos.length} todos(s)`}
+				</strong>
+				?
+			</Confirm>
 		</>
 	);
 }

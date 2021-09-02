@@ -13,13 +13,13 @@ function DataView({
 	editTodo,
 	deleteTodo,
 }) {
-	const selectedItems = data.filter((each) => each.selected);
+	const selectedTodos = data.filter((each) => each.selected);
 
 	const footerText = () => {
-		return selectedItems.length > 1
-			? `Selected: ${selectedItems.length} record(s)`
-			: selectedItems.length === 1
-			? `Selected: ${selectedItems[0].title} (Record ID=${selectedItems[0].id})`
+		return selectedTodos.length > 1
+			? `Selected: ${selectedTodos.length} record(s)`
+			: selectedTodos.length === 1
+			? `Selected: ${selectedTodos[0].title} (Record ID=${selectedTodos[0].id})`
 			: '';
 	};
 
