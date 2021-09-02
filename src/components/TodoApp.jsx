@@ -5,8 +5,7 @@ import formattedDateTime from '../assets/js/formattedDateTime';
 
 import { Container, Col, Row, Button, Table, Form } from 'reactstrap';
 import Controllers from './Controllers';
-import ListView from './ListView';
-import TableView from './TableView';
+import DataView from './DataView';
 import CustomModal from './CustomModal';
 import AddTodoForm from './AddTodoForm';
 import EditTodoForm from './EditTodoForm';
@@ -35,28 +34,6 @@ const TodoApp = ({
 		document.querySelector('#deleteTodo button[type=submit]').click();
 	};
 
-	const getView = () => {
-		return controllers.dataView.currView === 'table' ? (
-			<TableView
-				todos={data}
-				onSelect={onSelect}
-				onChangeStatus={onChangeStatus}
-				viewTodo={viewTodo}
-				editTodo={editTodo}
-				deleteTodo={deleteTodo}
-			/>
-		) : (
-			<ListView
-				todos={data}
-				onSelect={onSelect}
-				onChangeStatus={onChangeStatus}
-				viewTodo={viewTodo}
-				editTodo={editTodo}
-				deleteTodo={deleteTodo}
-			/>
-		);
-	};
-
 	return (
 		<>
 			<Container className="px-2 px-md-5 mb-5">
@@ -72,7 +49,17 @@ const TodoApp = ({
 				</Row>
 				{/* Data View */}
 				<Row>
-					<Col>{getView()}</Col>
+					<Col>
+						<DataView
+							currView={controllers.dataView.currView}
+							data={data}
+							onSelect={onSelect}
+							onChangeStatus={onChangeStatus}
+							viewTodo={viewTodo}
+							editTodo={editTodo}
+							deleteTodo={deleteTodo}
+						/>
+					</Col>
 				</Row>
 			</Container>
 
@@ -86,6 +73,11 @@ const TodoApp = ({
 				title="Add New Todo"
 				isOpen={controllers.openAddTodo.isOpen}
 				onToggle={controllers.openAddTodo.toggle}
+				onKeyDown={(event) => {
+					if (event.ctrlKey && event.keyCode === 13) {
+						document.getElementById('btnAddTodo').click();
+					}
+				}}
 				footerContent={
 					<>
 						<Tooltip
@@ -95,7 +87,7 @@ const TodoApp = ({
 						>
 							<Button
 								color="primary"
-								data-tooltip=""
+								id="btnAddTodo"
 								onClick={() => {
 									submitAddTodoForm();
 									// After submitting, toggle to close addTodoModal
@@ -142,6 +134,11 @@ const TodoApp = ({
 				title="View Todo"
 				isOpen={viewTodo.modal.isOpen}
 				onToggle={viewTodo.modal.toggle}
+				onKeyDown={(event) => {
+					if (event.keyCode === 13) {
+						viewTodo.modal.toggle();
+					}
+				}}
 				footerContent={
 					<>
 						<Tooltip placement="bottom" text="OK (Enter)">
@@ -206,11 +203,17 @@ const TodoApp = ({
 				title="Edit Todo"
 				isOpen={editTodo.modal.isOpen}
 				onToggle={editTodo.modal.toggle}
+				onKeyDown={(event) => {
+					if (event.keyCode === 13) {
+						document.getElementById('btnUpdateTodo').click();
+					}
+				}}
 				footerContent={
 					<>
 						<Tooltip placement="bottom" text="Update (Enter)">
 							<Button
 								color="primary"
+								id="btnUpdateTodo"
 								onClick={() => {
 									submitEditTodoForm();
 									editTodo.modal.toggle();
@@ -238,11 +241,17 @@ const TodoApp = ({
 				title="Delete Todo"
 				isOpen={deleteTodo.modal.isOpen}
 				onToggle={deleteTodo.modal.toggle}
+				onKeyDown={(event) => {
+					if (event.keyCode === 13) {
+						document.getElementById('btnDeleteTodo').click();
+					}
+				}}
 				footerContent={
 					<>
 						<Tooltip placement="bottom" text="Delete (Enter)">
 							<Button
 								color="danger"
+								id="btnDeleteTodo"
 								onClick={() => {
 									submitDeleteTodoForm();
 									deleteTodo.modal.toggle();
@@ -269,14 +278,43 @@ const TodoApp = ({
 
 TodoApp.propTypes = {
 	data: PropTypes.arrayOf(PropTypes.object).isRequired,
-	newTodo: PropTypes.shape({
-		newTodoObj: PropTypes.object.isRequired,
-		onChangeInput: PropTypes.func.isRequired,
-		add: PropTypes.func.isRequired,
-	}).isRequired,
-	controllers: PropTypes.object.isRequired,
 	onSelect: PropTypes.func.isRequired,
 	onChangeStatus: PropTypes.func.isRequired,
+
+	controllers: PropTypes.object.isRequired,
+
+	newTodo: PropTypes.shape({
+		add: PropTypes.func.isRequired,
+		newTodoObj: PropTypes.object.isRequired,
+		onChangeInput: PropTypes.func.isRequired,
+	}).isRequired,
+
+	viewTodo: PropTypes.shape({
+		viewTodoObj: PropTypes.object.isRequired,
+		modal: PropTypes.shape({
+			isOpen: PropTypes.bool.isRequired,
+			toggle: PropTypes.func.isRequired,
+		}).isRequired,
+	}).isRequired,
+
+	editTodo: PropTypes.shape({
+		editTodoObj: PropTypes.object.isRequired,
+		onChangeInput: PropTypes.func.isRequired,
+		update: PropTypes.func.isRequired,
+		modal: PropTypes.shape({
+			isOpen: PropTypes.bool.isRequired,
+			toggle: PropTypes.func.isRequired,
+		}).isRequired,
+	}).isRequired,
+
+	deleteTodo: PropTypes.shape({
+		deleteTodoObj: PropTypes.object.isRequired,
+		modal: PropTypes.shape({
+			isOpen: PropTypes.bool.isRequired,
+			toggle: PropTypes.func.isRequired,
+		}).isRequired,
+		delete: PropTypes.func.isRequired,
+	}).isRequired,
 };
 
 export default TodoApp;

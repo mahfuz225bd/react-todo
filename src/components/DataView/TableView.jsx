@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import { Table, CustomInput, ButtonGroup, Button } from 'reactstrap';
 
-import formattedDateTime from '../assets/js/formattedDateTime';
+import formattedDateTime from '../../assets/js/formattedDateTime';
 
 function TableView({
 	todos,
@@ -13,14 +13,6 @@ function TableView({
 	editTodo,
 	deleteTodo,
 }) {
-	const selectedItems = todos.filter((each) => each.selected);
-	const footerText = () => {
-		return selectedItems.length > 1
-			? `Selected: ${selectedItems.length} record(s)`
-			: selectedItems.length === 1
-			? `Selected: ${selectedItems[0].title} (Record ID=${selectedItems[0].id})`
-			: '';
-	};
 	return (
 		<div>
 			{todos.length ? (
@@ -150,7 +142,6 @@ function TableView({
 							))}
 						</tbody>
 					</Table>
-					<span>{footerText()}</span>
 				</>
 			) : (
 				<p>There is no data to show</p>

@@ -9,23 +9,17 @@ function CustomModal({
 	title,
 	isOpen,
 	onToggle,
-	onClose,
+	onKeyDown,
 	footerContent,
 	children,
 }) {
 	return (
-		<div>
+		<div onKeyDown={(event) => onKeyDown(event)}>
 			<Modal isOpen={isOpen} toggle={onToggle}>
 				<ModalHeader
 					close={
 						<Tooltip text="Close (ESC)">
-							<button
-								className="btn-close"
-								onClick={() => {
-									onToggle();
-									onClose && onClose();
-								}}
-							>
+							<button className="btn-close" onClick={() => onToggle()}>
 								&times;
 							</button>
 						</Tooltip>
@@ -37,13 +31,7 @@ function CustomModal({
 				<ModalFooter>
 					{footerContent}
 					<Tooltip text="Cancel (ESC)">
-						<Button
-							color="secondary"
-							onClick={() => {
-								onToggle();
-								onClose && onClose();
-							}}
-						>
+						<Button color="secondary" onClick={() => onToggle()}>
 							Cancel
 						</Button>
 					</Tooltip>
@@ -58,7 +46,7 @@ CustomModal.propTypes = {
 	title: PropTypes.string.isRequired,
 	isOpen: PropTypes.bool.isRequired,
 	onToggle: PropTypes.func.isRequired,
-	onClose: PropTypes.func,
+	onKeyDown: PropTypes.func,
 	footerContent: PropTypes.oneOfType([
 		PropTypes.arrayOf(PropTypes.node),
 		PropTypes.node,

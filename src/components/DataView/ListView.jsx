@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import formattedDateTime from '../assets/js/formattedDateTime';
+import formattedDateTime from '../../assets/js/formattedDateTime';
 
 import {
 	Button,
@@ -21,14 +21,6 @@ function ListView({
 	editTodo,
 	deleteTodo,
 }) {
-	const selectedItems = todos.filter((each) => each.selected);
-	const footerText = () => {
-		return selectedItems.length > 1
-			? `Selected: ${selectedItems.length} record(s)`
-			: selectedItems.length === 1
-			? `Selected: ${selectedItems[0].title} (Record ID=${selectedItems[0].id})`
-			: '';
-	};
 	return (
 		<div>
 			{todos.length ? (
@@ -129,7 +121,6 @@ function ListView({
 							</ListGroupItem>
 						))}
 					</ListGroup>
-					<span>{footerText()}</span>
 				</>
 			) : (
 				<p>There is no data to show</p>
@@ -139,8 +130,6 @@ function ListView({
 }
 
 ListView.propTypes = {
-	onChangeStatus: PropTypes.func.isRequired,
-	onSelect: PropTypes.func.isRequired,
 	todos: PropTypes.arrayOf(
 		PropTypes.shape({
 			selected: PropTypes.bool.isRequired,
@@ -152,6 +141,8 @@ ListView.propTypes = {
 			completed: PropTypes.bool.isRequired,
 		})
 	).isRequired,
+	onSelect: PropTypes.func.isRequired,
+	onChangeStatus: PropTypes.func.isRequired,
 	viewTodo: PropTypes.shape({
 		modal: PropTypes.shape({
 			toggle: PropTypes.func.isRequired,

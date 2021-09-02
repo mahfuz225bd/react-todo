@@ -15,19 +15,17 @@ function Tooltip({ children, placement, arrow, text, customCSS }) {
 				onMouseOut={() => toggle(false)}
 			>
 				{children}
-				<span
-					className={[
-						styles['tooltip-text'],
-						styles[placement],
-						arrow && styles[`${placement}-arrow`],
-					].join(' ')}
-					style={{
-						visibility: tooltipOpen ? 'visible' : 'hidden',
-						...customCSS,
-					}}
-				>
-					{text}
-				</span>
+				{tooltipOpen && (
+					<span
+						className={[
+							styles['tooltip-text'],
+							styles[placement],
+							arrow && styles[`${placement}-arrow`],
+						].join(' ')}
+					>
+						{text}
+					</span>
+				)}
 			</div>
 		</>
 	);
