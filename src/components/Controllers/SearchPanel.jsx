@@ -41,11 +41,23 @@ function SearchPanel({ searchValue, onChangeSearchValue, disabled }) {
 						Search
 					</DropdownToggle>
 					<DropdownMenu>
-						<DropdownItem>
+						<DropdownItem
+							onClick={() =>
+								alert(
+									'Feature: Advanced Search (by Calendar) is not currently available.'
+								)
+							}
+						>
 							<i className="fas fa-calendar-day" aria-hidden="true"></i> by
 							Calendar
 						</DropdownItem>
-						<DropdownItem>
+						<DropdownItem
+							onClick={() =>
+								alert(
+									'Feature: Advanced Search (by Date Range) is not currently available.'
+								)
+							}
+						>
 							<i className="fas fa-calendar-alt" aria-hidden="true"></i> by Date
 							Range
 						</DropdownItem>

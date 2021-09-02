@@ -38,7 +38,7 @@ const TodoApp = ({
 		<>
 			<Container className="px-2 px-md-5 mb-5">
 				<Row className="my-3 my-md-5">
-					<h2 className="display-4 text-center">React Todo App</h2>
+					<h2 className="display-4 text-center">Todo App</h2>
 				</Row>
 				{/* Controllers */}
 				<Row className="mb-1">
