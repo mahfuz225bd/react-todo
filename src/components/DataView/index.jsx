@@ -13,9 +13,9 @@ function DataView({
 	editTodo,
 	deleteTodo,
 }) {
-	const footerText = () => {
-		const selectedItems = data.filter((each) => each.selected);
+	const selectedItems = data.filter((each) => each.selected);
 
+	const footerText = () => {
 		return selectedItems.length > 1
 			? `Selected: ${selectedItems.length} record(s)`
 			: selectedItems.length === 1
@@ -24,7 +24,15 @@ function DataView({
 	};
 
 	return (
-		<div>
+		<div
+			onKeyDown={(event) => {
+				if (
+					selectedItems.some((each) => each.selected) &&
+					event.key === 'Shift'
+				) {
+				}
+			}}
+		>
 			{(function () {
 				switch (currView) {
 					case 'table':

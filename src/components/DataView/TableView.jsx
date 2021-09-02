@@ -117,6 +117,9 @@ function TableView({
 												onClick={() => {
 													editTodo.setEditTodo(todo.id);
 													editTodo.modal.toggle();
+													setTimeout(() => {
+														document.querySelector('#editTodo #title').select();
+													});
 												}}
 											>
 												<i className="fas fa-edit" aria-hidden="true"></i>{' '}

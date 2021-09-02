@@ -15,7 +15,7 @@ function AddTodoButton({ openAddTodo }) {
 					//Focus after opening addTodoModal
 					setTimeout(() => {
 						document.querySelector('#addTodo #title').focus();
-					}, 500);
+					});
 				}}
 			>
 				<i className="fa fa-plus" aria-hidden="true"></i> Add
