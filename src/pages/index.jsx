@@ -15,12 +15,26 @@ const initNewTodo = {
 	started: false,
 };
 
+const initVewTodo = {
+	id: 0,
+	title: '',
+	datetime: '',
+	description: '',
+	status: '',
+};
+
 const initEditTodo = {
+	id: 0,
 	title: '',
 	datetime: new Date().toISOString(),
 	description: '',
 	started: false,
 	completed: false,
+};
+
+const initDeleteTodo = {
+	id: 0,
+	title: '',
 };
 
 class Home extends Component {
@@ -29,9 +43,9 @@ class Home extends Component {
 		this.state = {
 			data: getData(),
 			newTodo: initNewTodo,
-			viewTodo: {},
+			viewTodo: initVewTodo,
 			editTodo: initEditTodo,
-			deleteTodo: {},
+			deleteTodo: initDeleteTodo,
 
 			searchValue: '',
 			filterStatus: 'all',
@@ -383,7 +397,7 @@ class Home extends Component {
 					// By closing, init viewTodo
 					if (openViewTodoModal) {
 						this.setState({
-							viewTodo: {},
+							viewTodo: initVewTodo,
 						});
 					}
 					break;
@@ -407,7 +421,7 @@ class Home extends Component {
 					// By closing, init deleteTodo
 					if (openDeleteTodoModal) {
 						this.setState({
-							deleteTodo: {},
+							deleteTodo: initDeleteTodo,
 						});
 					}
 					break;

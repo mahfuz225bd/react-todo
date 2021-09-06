@@ -285,12 +285,22 @@ TodoApp.propTypes = {
 
 	newTodo: PropTypes.shape({
 		add: PropTypes.func.isRequired,
-		newTodoObj: PropTypes.object.isRequired,
+		newTodoObj: PropTypes.shape({
+			title: PropTypes.string.isRequired,
+			description: PropTypes.string.isRequired,
+			started: PropTypes.bool.isRequired,
+		}).isRequired,
 		onChangeInput: PropTypes.func.isRequired,
 	}).isRequired,
 
 	viewTodo: PropTypes.shape({
-		viewTodoObj: PropTypes.object.isRequired,
+		viewTodoObj: PropTypes.shape({
+			id: PropTypes.number.isRequired,
+			title: PropTypes.string.isRequired,
+			datetime: PropTypes.string.isRequired,
+			description: PropTypes.string.isRequired,
+			status: PropTypes.string.isRequired,
+		}).isRequired,
 		modal: PropTypes.shape({
 			isOpen: PropTypes.bool.isRequired,
 			toggle: PropTypes.func.isRequired,
@@ -298,7 +308,14 @@ TodoApp.propTypes = {
 	}).isRequired,
 
 	editTodo: PropTypes.shape({
-		editTodoObj: PropTypes.object.isRequired,
+		editTodoObj: PropTypes.shape({
+			id: PropTypes.number.isRequired,
+			title: PropTypes.string.isRequired,
+			datetime: PropTypes.string.isRequired,
+			description: PropTypes.string.isRequired,
+			started: PropTypes.bool.isRequired,
+			completed: PropTypes.bool.isRequired,
+		}).isRequired,
 		onChangeInput: PropTypes.func.isRequired,
 		update: PropTypes.func.isRequired,
 		modal: PropTypes.shape({
@@ -308,7 +325,10 @@ TodoApp.propTypes = {
 	}).isRequired,
 
 	deleteTodo: PropTypes.shape({
-		deleteTodoObj: PropTypes.object.isRequired,
+		deleteTodoObj: PropTypes.shape({
+			id: PropTypes.number.isRequired,
+			title: PropTypes.string.isRequired,
+		}).isRequired,
 		modal: PropTypes.shape({
 			isOpen: PropTypes.bool.isRequired,
 			toggle: PropTypes.func.isRequired,
